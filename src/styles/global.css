@@ -164,6 +164,28 @@ img, video { display: block; max-width: 100%; }
 .case__pattern--mob { display: none; grid-column: 1 / -1; }
 .case__copy { display: flex; flex-direction: column; gap: 20px; line-height: 1.55; color: var(--body); }
 .case__copy p { margin: 0; text-wrap: pretty; }
+.case__art { width: min(100%, 380px); height: auto; align-self: center; margin-top: calc(-1 * var(--gap1)); margin-bottom: calc(-1 * var(--gap3)); }   /* transparent graphic under the Approach text, centred under it; cancels .case__text's bottom padding */
+/* per-case fine-tuning: .case--01 = Seaworthy, .case--02 = Toro Bravo, etc. (class set in CaseStudy.jsx from the project number) */
+.case--01 .case__d3col { margin-top: 0; }   /* the fish logo already fills the right column, so drop the d3 stagger */
+@media (min-width: 721px) {
+  .case--01 .case__d2 { margin-top: -87px; }                    /* green invite: more negative = higher */
+  .case--01 .case__pattern--desk { margin-top: 24px; }          /* mint invite: bigger = lower */
+}
+.case--01 .h3, .case--02 .h3 { max-width: none; }   /* Seaworthy + Toro headline breaks are set by hand in projects.jsx */
+.case--02 .case__art { width: min(100%, 320px); margin-top: var(--gap3); margin-bottom: 0; opacity: .75; }   /* Toro logo: size, space above/below (PNG has no built-in margin), transparency */
+/* desktop: bigger logo that hangs down behind the cover so the cover's top-right corner overlaps the circle.
+   margin-bottom pulls the rows below up over it (more negative = more overlap) */
+@media (min-width: 721px) {
+  /* --toro-drop: logo + cover down together (bigger = lower)
+     --toro-logo-y: logo only (negative = up)
+     --toro-overlap: cover only, how far it rides up over the logo (bigger = more overlap) */
+  .case--02 { --toro-drop: 114px; --toro-logo-y: -144px; --toro-overlap: 110px; }
+  .case--02 .case__art { width: min(100%, 520px); margin-top: calc(var(--gap3) + var(--toro-drop) + var(--toro-logo-y)); margin-bottom: calc(-284px - var(--toro-logo-y)); }
+  /* centre the logo between the pattern image's right edge (max 440px wide) and the page's right edge.
+     100% = width of the text column; 12px = the column gap in .case__text */
+  .case--02 .case__art { position: relative; left: calc((min(100%, 440px) - 12px - 100%) / 2); }
+  .case--02 .case__d2 { margin-top: calc(var(--toro-drop) - var(--toro-overlap)); }
+}
 .case__d2 { grid-column: span 4; aspect-ratio: 4 / 3; }
 .case__d3col { grid-column: span 2; margin-top: clamp(40px, 14vw, 220px); min-width: 0; display: flex; flex-direction: column; gap: 10px; align-self: start; }
 .case__d3col--split { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--gap1); }

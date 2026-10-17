@@ -45,7 +45,7 @@ export default function CaseStudy({ projects, index, setIndex }) {
       </div>
 
       {/* key remounts the case so reveal animations replay on every switch */}
-      <div key={p.n} className="case__grid">
+      <div key={p.n} className={'case__grid case--' + p.n}>
         <div className="media case__hero" data-reveal="clip" data-img="" data-demo="" style={heroBox}>
           <div data-parallax={p.hero.parallax ? '0.08' : '0'}
             style={{ position: 'absolute', inset: p.hero.parallax ? '-8% 0' : '0', background: p.hero.bg || 'transparent' }}>
@@ -66,6 +66,7 @@ export default function CaseStudy({ projects, index, setIndex }) {
           <div className="case__copy" data-reveal="up" data-delay="120">
             <p>{p.context}</p>
             <p>{p.approach}</p>
+            {p.art && <img className="case__art" src={p.art.src} alt={p.art.alt || ''} loading="lazy" />}
           </div>
         </div>
 

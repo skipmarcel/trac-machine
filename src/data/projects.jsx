@@ -22,12 +22,13 @@ const spots = (labels = {}, pos = {}) =>
   d3:    tall detail image (3:4, right)   { src, video, caption, label (gray text above the box) }
   d3b:   optional second 3:4 box beside d3 (d3 + d3b share the right column). Empty src shows a placeholder.
   pattern: optional extra image { src, alt, aspect, caption }: under the headline on desktop, under d2 on mobile
+  art:   optional transparent graphic (e.g. SVG logo) under the Approach paragraph { src, alt }
   preview: image in the cursor-follow circle when hovering the row (defaults to hero.src)
 */
 export const projects = [
   {
     n: '01', title: 'Seaworthy Jewelry', disc: 'Branding', year: '2026',
-    headline: 'Seaworthy brand identity reboot',
+    headline: <>Seaworthy<br />brand identity reboot</>,   // explicit line break, one phrase per line
     context: (
       <><L href="https://www.seaworthypdx.com/">Seaworthy</L> started in January of 2010 as a side project. An opportunity to escape a corporate job that had their designer, Marisa Howard, drowning in boredom. Seaworthy has grown from a hobby to a full-blown jewelry production facility, employing skilled artisans and honoring a history of US manufactured jewelry.</>
     ),
@@ -35,11 +36,13 @@ export const projects = [
     hero: { src: C + 'd1-case-hero.png', aspect: '3 / 2' },
     d2: { src: C + 'd1-case-2.webp' },
     d3: { src: C + 'd1-case-3.webp' },
+    pattern: { src: C + 'tm-case01-invite.jpg', alt: 'Seaworthy open studio party invitation', aspect: '4 / 3' },
+    art: { src: C + 'tm-case01-fish.svg', alt: 'Seaworthy fish logo' },
     spots: spots({ 1: 'Font creation', 2: 'Logo design' }, { 2: { x: '17.5%', y: '79%' } }),
   },
   {
     n: '02', title: 'Toro Bravo Cookbook', disc: 'Print', year: '2013',
-    headline: 'TORO BRAVO: STORIES. RECIPES. NO BULL.',
+    headline: <>TORO BRAVO:<br />STORIES. RECIPES.<br />NO BULL.</>,   // explicit line breaks, one phrase per line
     context: (
       <>I met John Gorham around 2006, a year before he opened Toro Bravo in Portland, Oregon. He became a regular tattoo client and friend, and the bull I tattooed on his left arm became the restaurant's logo and personality for 13 years, until Covid closed it in 2020. I introduced John to my then partner, food writer Liz Crain, and together they wrote the <L href="https://store.mcsweeneys.net/products/toro-bravo-stories-recipes-no-bull?taxon_id=59">Toro Bravo Cookbook</L>, published by <L href="https://store.mcsweeneys.net/">McSweeney's</L> in 2013. I designed the book's look and feel, including the original logo, the outside and inside covers, and aspects of the page design. Between recipe testing at John's house and tattooing everyone involved, it felt more like a big party than a job.</>
     ),
@@ -47,6 +50,7 @@ export const projects = [
     hero: { video: A + 'toro-cookbook.mp4', parallax: true },
     d2: { src: C + 'tm-case02-2.webp', caption: 'Cover art and layout design' },
     d3: { src: C + 'tm-case02-3.webp', caption: 'Toro Bravo owner, John Gorham' },
+    art: { src: C + 'tm-case02-logo.png', alt: 'Toro Bravo logo, est. 2007' },
     pattern: { src: C + 'tm-case02-pattern.jpg', alt: 'Repeating bull-head pattern in dark red on red', aspect: '1400 / 1340', caption: 'Inside cover Illustrations' },
     preview: A + 'toro-cover-logo.png',
     spots: spots({ 1: 'Toro Bravo logo design', 2: 'Color and layout design', 3: 'Illustration throughout the book' }),
