@@ -9,6 +9,17 @@ function Fill({ src, video, fit = 'cover' }) {
 
 const Caption = ({ text }) => (text ? <div className="caption">{text}</div> : null);
 
+// Hotspot labels open to the right. If the open label would run past the image's right edge
+// (small phones), slide the whole pill left just enough to fit; slide it back on close.
+const SPOT_PAD = 8;
+function fitSpot(e) {
+  const s = e.currentTarget, box = s.parentElement.getBoundingClientRect(), r = s.getBoundingClientRect();
+  const open = s.querySelector('.spot__n').offsetWidth + s.querySelector('.spot__label').scrollWidth;   // full open width
+  const over = r.left + open - (box.right - SPOT_PAD);
+  s.style.transform = over > 0 ? `translateX(${-Math.min(over, r.left - box.left - SPOT_PAD)}px)` : '';
+}
+const unfitSpot = (e) => { e.currentTarget.style.transform = ''; };
+
 // Rendered twice (under the headline on desktop, under d2 on mobile); CSS shows one per layout.
 const Pattern = ({ item, where }) => (
   <div className={'media case__pattern case__pattern--' + where} data-reveal="clip" data-img="" style={{ aspectRatio: item.aspect }}>
@@ -52,7 +63,8 @@ export default function CaseStudy({ projects, index, setIndex }) {
             <Fill src={p.hero.src} video={p.hero.video} fit={p.hero.fit} />
           </div>
           {p.spots.map((h) => (
-            <div key={h.n} className="spot" data-spot="" tabIndex={0} style={{ left: h.x, top: h.y }}>
+            <div key={h.n} className="spot" data-spot="" tabIndex={0} style={{ left: h.x, top: h.y }}
+              onMouseEnter={fitSpot} onFocus={fitSpot} onMouseLeave={unfitSpot} onBlur={unfitSpot}>
               <span className="spot__n">{h.n}</span><span className="spot__label">{h.label}</span>
             </div>
           ))}
