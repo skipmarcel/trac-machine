@@ -157,6 +157,11 @@ img, video { display: block; max-width: 100%; }
 .case__hero { grid-column: 1 / -1; }
 .case__text { grid-column: 1 / -1; display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 320px), 1fr)); gap: 24px 12px; padding: var(--gap3) 0; }
 .h3 { margin: 0; font-size: clamp(32px, 4vw, 64px); font-weight: 500; letter-spacing: -.04em; line-height: .95; max-width: 12ch; }
+/* headline column; an optional pattern image sits under the headline on desktop */
+.case__lead { display: flex; flex-direction: column; gap: var(--gap3); align-items: flex-start; min-width: 0; }
+.case__pattern { width: 100%; }
+.case__pattern--desk { max-width: 440px; margin-bottom: var(--gap2); }
+.case__pattern--mob { display: none; grid-column: 1 / -1; }
 .case__copy { display: flex; flex-direction: column; gap: 20px; line-height: 1.55; color: var(--body); }
 .case__copy p { margin: 0; text-wrap: pretty; }
 .case__d2 { grid-column: span 4; aspect-ratio: 4 / 3; }
@@ -170,6 +175,8 @@ img, video { display: block; max-width: 100%; }
   .case__nav button { height: 32px; min-width: 32px; padding: 0 4px; }
   .case__nav .case__arrow { width: 32px; }
   .case__d2, .case__d3col { grid-column: 1 / -1; margin-top: 0; }
+  .case__pattern--desk { display: none; }
+  .case__pattern--mob { display: block; }
 }
 .caption { position: absolute; left: 0; right: 0; bottom: 0; z-index: 2; padding: 64px clamp(16px, 2vw, 24px) clamp(16px, 2vw, 24px); background: linear-gradient(to top, rgba(0,0,0,.55), rgba(0,0,0,0)); color: #fff; font-size: 15px; font-weight: 500; line-height: 1.3; pointer-events: none; }
 .spot { position: absolute; z-index: 3; display: flex; align-items: center; height: 34px; max-width: 34px; overflow: hidden; border-radius: 999px; background: var(--ink); color: var(--bg); font: 500 13px var(--mono); white-space: nowrap; transition: max-width .55s var(--ease); cursor: default; }

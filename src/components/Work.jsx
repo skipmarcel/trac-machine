@@ -5,7 +5,6 @@ export default function Work({ projects, onOpen }) {
     <section id="work" className="work" data-sec="" data-follow-zone="">
       <div className="work__head">
         <h2 className="h2" data-head="">Selected work</h2>
-        <span className="mono" data-scramble="">({String(projects.length).padStart(2, '0')})</span>
       </div>
 
       {projects.map((p, i) => (
@@ -13,7 +12,7 @@ export default function Work({ projects, onOpen }) {
           onClick={(e) => { e.preventDefault(); onOpen(i); }}>
           <span className="row__n">{p.n}</span>
           <span className="row__title">{p.title}</span>
-          <span className="row__meta"><span>{p.disc}</span><span>{p.year}</span><span data-ico="">→</span></span>
+          <span className="row__meta"><span>{p.disc}</span><span data-ico="">→</span></span>
         </a>
       ))}
 

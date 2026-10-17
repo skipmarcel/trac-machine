@@ -9,6 +9,13 @@ function Fill({ src, video, fit = 'cover' }) {
 
 const Caption = ({ text }) => (text ? <div className="caption">{text}</div> : null);
 
+// Rendered twice (under the headline on desktop, under d2 on mobile); CSS shows one per layout.
+const Pattern = ({ item, where }) => (
+  <div className={'media case__pattern case__pattern--' + where} data-reveal="clip" data-img="" style={{ aspectRatio: item.aspect }}>
+    <img src={item.src} alt={item.alt || ''} loading="lazy" /><Caption text={item.caption} />
+  </div>
+);
+
 function TallBox({ item, delay }) {
   if (!item.src && !item.video) {
     return <div className="media case__d3 media--empty">Add image in projects.jsx</div>;
@@ -52,7 +59,10 @@ export default function CaseStudy({ projects, index, setIndex }) {
         </div>
 
         <div className="case__text">
-          <h3 className="h3" data-head="">{p.headline}</h3>
+          <div className="case__lead">
+            <h3 className="h3" data-head="">{p.headline}</h3>
+            {p.pattern && <Pattern item={p.pattern} where="desk" />}
+          </div>
           <div className="case__copy" data-reveal="up" data-delay="120">
             <p>{p.context}</p>
             <p>{p.approach}</p>
@@ -62,6 +72,7 @@ export default function CaseStudy({ projects, index, setIndex }) {
         <div className="media case__d2" data-reveal="clip" data-img="" style={{ background: p.d2.bg || 'transparent' }}>
           <Fill src={p.d2.src} fit={p.d2.fit} /><Caption text={p.d2.caption} />
         </div>
+        {p.pattern && <Pattern item={p.pattern} where="mob" />}
 
         {/* label sits outside the clip-revealed box so the reveal can't hide it */}
         <div className={'case__d3col' + (p.d3b ? ' case__d3col--split' : '')}>

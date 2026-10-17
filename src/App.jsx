@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useLayoutEffect, useRef, useState } from 'react';
 import Header from './components/Header.jsx';
 import Hero, { HeroPhoto } from './components/Hero.jsx';
 import Work from './components/Work.jsx';
@@ -31,7 +31,8 @@ export default function App() {
 
   // Header text/background follow the photo fade: --hdr-t is how faded the band is behind the
   // header's midline (0 = over the photo → white text, 1 = past it → ink on solid bar).
-  useEffect(() => {
+  // Layout effect so the first paint already has white text (no black flash).
+  useLayoutEffect(() => {
     const on = () => {
       const root = rootRef.current, band = root && root.querySelector('.hero-photo'), hdr = root && root.querySelector('header');
       if (!band || !hdr) return;
@@ -50,7 +51,8 @@ export default function App() {
   useEffect(() => setMenuOpen(false), [isMobile]);
 
   // Motion scripts (src/lib) attach to the root once, then re-scan when content changes.
-  useEffect(() => {
+  // Layout effect: reveal targets must be hidden before the first paint, or they flash visible.
+  useLayoutEffect(() => {
     const root = rootRef.current;
     window.TMREVEAL = MOTION['data-ix-reveal'];
     window.TM.init(root);

@@ -21,6 +21,7 @@ const spots = (labels = {}, pos = {}) =>
   d2:    wide detail image (4:3, left)    { src, fit, bg, caption }
   d3:    tall detail image (3:4, right)   { src, video, caption, label (gray text above the box) }
   d3b:   optional second 3:4 box beside d3 (d3 + d3b share the right column). Empty src shows a placeholder.
+  pattern: optional extra image { src, alt, aspect, caption }: under the headline on desktop, under d2 on mobile
   preview: image in the cursor-follow circle when hovering the row (defaults to hero.src)
 */
 export const projects = [
@@ -46,6 +47,7 @@ export const projects = [
     hero: { video: A + 'toro-cookbook.mp4', parallax: true },
     d2: { src: C + 'tm-case02-2.webp', caption: 'Cover art and layout design' },
     d3: { src: C + 'tm-case02-3.webp', caption: 'Toro Bravo owner, John Gorham' },
+    pattern: { src: C + 'tm-case02-pattern.jpg', alt: 'Repeating bull-head pattern in dark red on red', aspect: '1400 / 1340', caption: 'Inside cover Illustrations' },
     preview: A + 'toro-cover-logo.png',
     spots: spots({ 1: 'Toro Bravo logo design', 2: 'Color and layout design', 3: 'Illustration throughout the book' }),
   },

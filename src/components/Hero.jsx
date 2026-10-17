@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react';
+import { useEffect, useLayoutEffect, useRef } from 'react';
 import { RESUME } from '../config.js';
 
 const reduceMotion = () => matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -45,7 +45,8 @@ const Letters = ({ text, cRef }) => [...text].map((ch, i) =>
 // Full-bleed BSA photo behind the header + title. Rendered by App before <Header/>.
 export function HeroPhoto() {
   const ref = useRef(null);
-  useEffect(() => {
+  // Layout effects (here and for the title) start the animations before the first paint, so nothing flashes in its end state.
+  useLayoutEffect(() => {
     if (reduceMotion() || !ref.current) return;
     ref.current.animate([{ opacity: 0, transform: 'scale(1.06)' }, { opacity: 1, transform: 'none' }],
       { duration: 1800, easing: 'cubic-bezier(.16,1,.3,1)', fill: 'both' });
@@ -65,7 +66,7 @@ export default function Hero({ isMobile }) {
   useTracMorph(tracRef);
 
   // Indent "MACHINE" so its C sits directly under the C of "TRAC".
-  useEffect(() => {
+  useLayoutEffect(() => {
     const align = () => {
       const a = c1Ref.current, b = c2Ref.current; if (!a || !b) return;
       const line = b.parentElement; line.style.paddingLeft = '0px';
@@ -80,11 +81,11 @@ export default function Hero({ isMobile }) {
   const play = () => {
     if (reduceMotion() || !h1Ref.current) return;
     h1Ref.current.querySelectorAll('[data-l]').forEach((l) => l.animate(
-      [{ opacity: 0, filter: 'blur(28px)' }, { opacity: 0.55, filter: 'blur(10px)', offset: 0.5 }, { opacity: 0.82, filter: 'blur(0)' }],
-      { duration: 5200, delay: 600, easing: 'cubic-bezier(.33,0,.2,1)', fill: 'both' }
+      [{ opacity: 0, filter: 'blur(28px)' }, { opacity: 0.55, filter: 'blur(10px)', offset: 0.1 }, { opacity: 0.82, filter: 'blur(0)' }],
+      { duration: 4800, easing: 'cubic-bezier(.33,0,.2,1)', fill: 'both' }
     ));
   };
-  useEffect(play, []);
+  useLayoutEffect(play, []);
 
   // Gooey rounding filter on the title (blur + alpha threshold softens the corners).
   const rnd = 2 * (isMobile ? 0.55 : 1), k = 3 + 18 / rnd;
