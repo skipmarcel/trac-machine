@@ -60,7 +60,13 @@ img, video { display: block; max-width: 100%; }
 .mobile-nav a span { font-size: 18px; }
 
 /* ---------- Hero photo band ---------- */
-.hero-photo { position: absolute; top: 0; left: 0; right: 0; height: 100svh; z-index: 1; overflow: hidden; background: #141413; }
+.hero-photo {
+  position: absolute; top: 0; left: 0; right: 0; height: 100svh; z-index: 1; overflow: hidden; background: #141413;
+  /* fades the whole band out over its bottom ~45%, so the page colour shows through. Masking the band itself (not an overlay)
+     keeps Safari from drawing a hard edge when the animated photo layer is composited above a masked sibling */
+  --m: linear-gradient(to bottom, #000 55%, rgba(0,0,0,.97) 62%, rgba(0,0,0,.88) 69%, rgba(0,0,0,.72) 76%, rgba(0,0,0,.5) 83%, rgba(0,0,0,.26) 90%, rgba(0,0,0,.08) 96%, transparent 100%);
+  -webkit-mask-image: var(--m); mask-image: var(--m);
+}
 .hero-photo__img {
   position: absolute; inset: 0;
   background: url(/assets/bsa-hero.jpg) no-repeat;
@@ -68,18 +74,19 @@ img, video { display: block; max-width: 100%; }
   background-position: right -34vw top 14%;     /* framing: headlamp sits right of the title */
 }
 .hero-photo__shade { position: absolute; inset: 0; background: linear-gradient(to bottom, rgba(10,10,9,.5) 0, rgba(10,10,9,0) 160px), linear-gradient(to top, rgba(10,10,9,0) 8%, rgba(10,10,9,.35) 32%, rgba(10,10,9,0) 65%); }
-/* soft fade into the page colour over the bottom ~45% */
-.hero-photo__fade {
-  position: absolute; inset: 0; background-color: var(--bg);
-  --m: linear-gradient(to bottom, transparent 55%, rgba(0,0,0,.03) 62%, rgba(0,0,0,.12) 69%, rgba(0,0,0,.28) 76%, rgba(0,0,0,.5) 83%, rgba(0,0,0,.74) 90%, rgba(0,0,0,.92) 96%, #000 100%);
-  -webkit-mask-image: var(--m); mask-image: var(--m);
-}
 
 /* ---------- Hero ---------- */
 .hero { position: relative; z-index: 1; padding: clamp(40px, 8vh, 96px) var(--gutter) 0; }
 /* fills the photo band and sits the title near its bottom; 50px ≈ header height */
 .hero__stage { min-height: calc(100svh - 50px - clamp(40px, 8vh, 96px)); display: flex; flex-direction: column; justify-content: flex-end; padding-bottom: 20svh; color: var(--hero-ink); }
-@media (max-width: 720px) { .hero__stage { min-height: calc(100svh - 53px - clamp(40px, 8vh, 96px)); } }
+@media (max-width: 720px) {
+  /* shorter band on phones so the title isn't sat under a tall strip of photo; reframed like desktop: headlamp upper right, tank lower left */
+  /* band height: 66% of the screen, capped by width so taller phones (16, Pro Max) don't get extra photo above the title */
+  .site { --band: min(66svh, 118vw); }
+  .hero-photo { height: var(--band); }
+  .hero-photo__img { background-size: auto 112%; background-position: 78% 30%; }
+  .hero__stage { min-height: calc(var(--band) - 53px - clamp(40px, 40vh, 96px)); padding-bottom: 7svh; }
+}
 .hero__trac { font-family: var(--mono); font-size: 13px; color: rgba(255, 255, 255, .75); margin-bottom: var(--gap2); white-space: pre; }
 .hero__title {
   margin: 0; cursor: pointer; filter: url(#tm-round);
@@ -93,6 +100,7 @@ img, video { display: block; max-width: 100%; }
 
 /* pulled up into the photo fade, directly under the title */
 .intro { position: relative; z-index: 2; display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 1fr)); gap: 24px clamp(12px, 4vw, 64px); margin-top: calc(-20svh + 4px); padding: var(--gap2) 0 var(--sec-pad); }
+@media (max-width: 720px) { .intro { margin-top: calc(-7svh + 4px); } }   /* matches the mobile stage padding-bottom */
 .intro__lede { margin: 0; font-size: clamp(24px, 2.4vw, 36px); line-height: 1.15; letter-spacing: -.02em; font-weight: 450; text-wrap: pretty; max-width: 22ch; }
 .intro__lead { display: flex; flex-direction: column; gap: var(--gap2); align-items: flex-start; }
 .intro__col { display: flex; flex-direction: column; gap: var(--gap2); align-items: flex-start; }

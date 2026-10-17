@@ -54,7 +54,6 @@ export function HeroPhoto() {
     <div className="hero-photo" aria-hidden="true">
       <div ref={ref} className="hero-photo__img" />
       <div className="hero-photo__shade" />
-      <div className="hero-photo__fade" />
     </div>
   );
 }
