@@ -11,6 +11,17 @@ import { MOTION, MOBILE_QUERY } from './config.js';
 
 const reduceMotion = () => matchMedia('(prefers-reduced-motion: reduce)').matches;
 
+// Same stops as the .hero-photo mask in global.css (position down the band → how far it has faded to the page colour).
+const FADE = [[.55, 0], [.62, .03], [.69, .12], [.76, .28], [.83, .5], [.9, .74], [.96, .92], [1, 1]];
+const fadeAt = (p) => {
+  if (p <= FADE[0][0]) return 0;
+  for (let i = 1; i < FADE.length; i++) {
+    const [p1, v1] = FADE[i];
+    if (p <= p1) { const [p0, v0] = FADE[i - 1]; return v0 + (v1 - v0) * (p - p0) / (p1 - p0); }
+  }
+  return 1;
+};
+
 export default function App() {
   const rootRef = useRef(null);
   const isMobile = useMediaQuery(MOBILE_QUERY);
@@ -18,11 +29,22 @@ export default function App() {
   const [caseIdx, setCaseIdx] = useState(0);
   const [overHero, setOverHero] = useState(true);
 
-  // Header goes from frosted-clear to solid once the photo band scrolls away.
+  // Header text/background follow the photo fade: --hdr-t is how faded the band is behind the
+  // header's midline (0 = over the photo → white text, 1 = past it → ink on solid bar).
   useEffect(() => {
-    const on = () => setOverHero(scrollY < innerHeight - 70);
-    on(); addEventListener('scroll', on, { passive: true });
-    return () => removeEventListener('scroll', on);
+    const on = () => {
+      const root = rootRef.current, band = root && root.querySelector('.hero-photo'), hdr = root && root.querySelector('header');
+      if (!band || !hdr) return;
+      const t = fadeAt((scrollY + hdr.offsetHeight / 2) / band.offsetHeight);
+      // Text flips over a short range where the bar's backdrop (photo fade + the bar's own tint) passes mid-tone,
+      // so it never sits grey-on-grey for long.
+      const lit = 1 - (1 - t) * (1 - 0.9 * t), k = Math.min(1, Math.max(0, (lit - 0.35) / 0.2));
+      root.style.setProperty('--hdr-t', t.toFixed(3));
+      root.style.setProperty('--hdr-ink', (k * k * (3 - 2 * k)).toFixed(3));
+      setOverHero(t < 1);
+    };
+    on(); addEventListener('scroll', on, { passive: true }); addEventListener('resize', on);
+    return () => { removeEventListener('scroll', on); removeEventListener('resize', on); };
   }, []);
 
   useEffect(() => setMenuOpen(false), [isMobile]);

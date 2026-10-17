@@ -48,7 +48,7 @@ src/
 - **Email / resume / socials:** `src/config.js`.
 - **Hero photo framing:** `.hero-photo__img` in `global.css`: `background-size` (zoom) and `background-position` (`right -34vw top 14%`; a more negative right value pushes the bike further right). The photo fade is `.hero-photo__fade`.
 - **Hero title:** colour `--hero-ink`, size `--hero-scale`, blur-in timing and final opacity (.82) in `play()` in `Hero.jsx`.
-- **Nav over the photo:** `.header.is-clear` in `global.css`. It switches to solid in `App.jsx` (`scrollY < innerHeight - 70`).
+- **Nav over the photo:** `.header` in `global.css` mixes white → ink text and clear → solid background by `--hdr-t`, which `App.jsx` sets on scroll from the photo's fade curve (`FADE`, same stops as the `.hero-photo` mask).
 - **Case 08 second tall image:** set `d3b: { src: C + 'tm-case08-4.webp' }` in `projects.jsx` and drop the file in `public/assets/case/`.
 - **Motion:** switch effects with the `MOTION` values in `src/config.js` (options listed inline).
 

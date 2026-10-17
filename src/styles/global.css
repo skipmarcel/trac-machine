@@ -43,17 +43,21 @@ img, video { display: block; max-width: 100%; }
 .inline-link { color: inherit; text-decoration: underline; text-underline-offset: 3px; }
 
 /* ---------- Header ---------- */
-.header { position: sticky; top: 0; z-index: 50; background: var(--bg-glass); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); border-bottom: 1px solid var(--ink); transition: background .4s, color .4s, border-color .4s; }
-/* over the hero photo: light frosted bar, no rule */
-.header.is-clear { background: rgba(255, 255, 255, .3); backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px); border-bottom-color: transparent; color: var(--ink); }
-.header.is-clear .header__tag { color: var(--body); }
+/* --hdr-t (0–1, set on scroll in App.jsx) follows the photo fade: clear bar over the photo → solid bar past it.
+   --hdr-ink flips the text white → ink as that backdrop turns light. */
+.header {
+  position: sticky; top: 0; z-index: 50; backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); border-bottom: 1px solid var(--ink); transition: border-color .4s;
+  color: color-mix(in srgb, var(--ink) calc(var(--hdr-ink, 1) * 100%), #fff);
+  background: color-mix(in srgb, var(--bg) calc(var(--hdr-t, 1) * 90%), transparent);
+}
+.header.is-open { --hdr-t: 1; --hdr-ink: 1; }   /* mobile menu open: always solid */
+.header.is-clear { border-bottom-color: transparent; }
 .header a { text-decoration: none; }
 .header__grid { display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); padding: 11px var(--gutter); align-items: baseline; gap: 0 12px; }
 .header__brand { font-weight: 600; letter-spacing: -.01em; grid-column: span 2; white-space: nowrap; }
-.header__tag { font-family: var(--mono); font-size: 13px; color: var(--muted); transition: color .4s; }
-.header__links { grid-column: span 3; display: flex; justify-content: flex-end; flex-wrap: wrap; gap: 4px 28px; }
+.header__links { grid-column: 3 / -1; display: flex; justify-content: flex-end; flex-wrap: wrap; gap: 4px 28px; }
 .header__bar { display: flex; justify-content: space-between; align-items: center; padding: 4px 16px; }
-.menu-btn { min-height: 44px; min-width: 44px; padding: 0; border: 0; background: none; color: var(--ink); font-family: var(--mono); font-size: 14px; cursor: pointer; text-align: right; }
+.menu-btn { min-height: 44px; min-width: 44px; padding: 0; border: 0; background: none; color: inherit; font-family: var(--mono); font-size: 14px; cursor: pointer; text-align: right; }
 .mobile-nav { display: flex; flex-direction: column; padding: 4px 16px 16px; border-top: 1px solid var(--soft); }
 .mobile-nav a { display: flex; justify-content: space-between; align-items: center; min-height: 52px; border-bottom: 1px solid var(--soft); font-size: 26px; font-weight: 500; letter-spacing: -.025em; }
 .mobile-nav a:last-child { border-bottom: 0; }

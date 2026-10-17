@@ -2,11 +2,11 @@ import { RESUME } from '../config.js';
 
 const LINKS = [['#work', 'Work'], ['#about', 'About'], ['#contact', 'Contact']];
 
-// overHero: header is over the photo → light frosted bar (.is-clear). Solid once scrolled past.
+// overHero: header is over the photo (.is-clear, no bottom rule). Text/background colour fade with --hdr-t (set in App.jsx).
 export default function Header({ isMobile, menuOpen, setMenuOpen, overHero }) {
   if (isMobile) {
     return (
-      <header className={'header' + (overHero && !menuOpen ? ' is-clear' : '')}>
+      <header className={'header' + (menuOpen ? ' is-open' : overHero ? ' is-clear' : '')}>
         <div className="header__bar">
           <a href="#top" className="header__brand">Trac Machine</a>
           <button className="menu-btn" aria-expanded={menuOpen} onClick={() => setMenuOpen(!menuOpen)}>
@@ -26,7 +26,6 @@ export default function Header({ isMobile, menuOpen, setMenuOpen, overHero }) {
     <header className={'header' + (overHero ? ' is-clear' : '')}>
       <div className="header__grid">
         <a href="#top" className="header__brand">Trac Machine</a>
-        <span className="header__tag">Graphic, Web, &amp; Print design</span>
         <nav className="header__links">
           {LINKS.map(([href, label]) => <a key={href} href={href} data-nav="">{label}</a>)}
           <a href={RESUME} target="_blank" rel="noopener noreferrer" data-nav="" className="accent">Resume →</a>
