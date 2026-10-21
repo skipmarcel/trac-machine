@@ -5,11 +5,6 @@ export const LINKEDIN = 'https://www.linkedin.com/in/tyler-adams-coding-sailor/'
 export const INSTAGRAM = 'https://www.instagram.com/tracmachine/';
 export const MOBILE_QUERY = '(max-width: 720px)';
 
-// Hero "T.R.A.C" effect above the title: 'scramble' (letters scramble into the full name)
-// or 'grow' (each word grows out of its initial, left to right). Add ?trac=grow or ?trac=scramble
-// to the page URL to preview the other one without changing this.
-export const TRAC_EFFECT = 'grow';
-
 // Rendered as data-ix-* attributes on the root element. tm-interact.js reads them.
 export const MOTION = {
   'data-ix-btn': 'Classic',          // Classic | Fill sweep | Lift | Magnetic | Arrow nudge

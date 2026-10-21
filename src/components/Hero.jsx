@@ -1,45 +1,9 @@
-import { useEffect, useLayoutEffect, useRef, useState } from 'react';
-import { RESUME, TRAC_EFFECT } from '../config.js';
+import { useEffect, useLayoutEffect, useRef } from 'react';
+import { RESUME } from '../config.js';
 
 const reduceMotion = () => matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-// "T.R.A.C" ⇄ "Tyler Russell Adams' Concept" scramble loop above the title.
-// T.R.A.C is all accent orange; in the long form only each word's first letter is.
-function useTracMorph(ref, on = true) {
-  useEffect(() => {
-    if (!on) return;
-    const A = 'T.R.A.C', B = "Tyler Russell Adams' Concept", GL = '!<>-_/[]{}=+*^?#ABCDEFGHJKLMNPRSTVWXYZ';
-    let dead = false, timer, raf;
-    const set = (s) => {
-      const el = ref.current; if (!el) return;
-      if (s === B) el.innerHTML = B.split(' ').map((w) => '<span class="accent">' + w[0] + '</span>' + w.slice(1)).join(' ');
-      else if (s === A) el.innerHTML = '<span class="accent">' + A + '</span>';
-      else el.textContent = s;
-    };
-    if (reduceMotion()) { set(B); return; }
-    const morph = (from, to, dur, done) => {
-      const t0 = performance.now(), L = Math.max(from.length, to.length);
-      const f = () => {
-        if (dead) return;
-        const p = Math.min(1, (performance.now() - t0) / dur);
-        const len = Math.round(from.length + (to.length - from.length) * Math.min(1, p * 1.6));
-        let out = '';
-        for (let i = 0; i < len; i++) {
-          const settle = (i / L) * 0.7 + 0.3, ch = to[i] || '';
-          out += p >= settle ? ch : ch === ' ' ? ' ' : GL[(Math.random() * GL.length) | 0];
-        }
-        set(p < 1 ? out : to);
-        if (p < 1) raf = requestAnimationFrame(f); else done();
-      };
-      f();
-    };
-    const cycle = () => { timer = setTimeout(() => morph(A, B, 1300, () => { timer = setTimeout(() => morph(B, A, 900, cycle), 3800); }), 2200); };
-    cycle();
-    return () => { dead = true; clearTimeout(timer); cancelAnimationFrame(raf); };
-  }, [ref, on]);
-}
-
-// Version 2: "T.R.A.C" → "TYLER RUSSELL ADAMS' CONCEPT". Each word grows out of its orange initial,
+// "T.R.A.C" → "TYLER RUSSELL ADAMS' CONCEPT" above the title. Each word grows out of its orange initial,
 // left to right, one word after another; holds, then folds back and loops.
 const GROW = [['T', 'YLER '], ['R', 'USSELL '], ['A', "DAMS' "], ['C', 'ONCEPT']];
 const GROW_MS = { start: 1200, word: 1100, stagger: 450, hold: 3800, back: 1300, backStagger: 380, rest: 2200 };
@@ -97,8 +61,6 @@ function TracGrow() {
   );
 }
 
-const tracEffect = () => new URLSearchParams(location.search).get('trac') || TRAC_EFFECT;
-
 const Letters = ({ text, cRef }) => [...text].map((ch, i) =>
   ch === 'C'
     ? <span key={i} data-l="" data-c="" ref={cRef}>{ch}</span>
@@ -123,11 +85,8 @@ export function HeroPhoto() {
 }
 
 export default function Hero({ isMobile }) {
-  const tracRef = useRef(null), h1Ref = useRef(null);
+  const h1Ref = useRef(null);
   const c1Ref = useRef(null), c2Ref = useRef(null);
-  const [grow] = useState(() => tracEffect() === 'grow');
-
-  useTracMorph(tracRef, !grow);
 
   // Indent "MACHINE" so its C sits directly under the C of "TRAC".
   useLayoutEffect(() => {
@@ -158,10 +117,7 @@ export default function Hero({ isMobile }) {
   return (
     <section id="top" className="hero">
       <div className="hero__stage">
-        <div className="hero__trac">
-          {grow ? <TracGrow />
-            : <span ref={tracRef} aria-label="Tyler Russell Adams' Concept"><span className="accent">T.R.A.C</span></span>}
-        </div>
+        <div className="hero__trac"><TracGrow /></div>
         <svg aria-hidden="true" width="0" height="0" style={{ position: 'absolute' }}>
           <filter id="tm-round" colorInterpolationFilters="sRGB" x="-5%" y="-5%" width="110%" height="110%">
             <feGaussianBlur in="SourceGraphic" stdDeviation={rnd} />
