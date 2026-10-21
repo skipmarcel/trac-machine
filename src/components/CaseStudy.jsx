@@ -34,7 +34,7 @@ export default function CaseStudy({ projects, index, setIndex }) {
   return (
     <section id="case" className="section" data-sec="">
       <div className="case__hdr">
-        <span data-scramble="">Case {p.n}</span><span>{p.title}</span><span>{p.year}</span><span className="accent">{p.disc}</span>
+        <span data-scramble="">Case {p.n}</span><span className="case__title">{p.title}</span><span className="accent">{p.disc}</span>
       </div>
       <div className="case__nav">
         <button className="case__arrow" aria-label="Previous case" onClick={() => setIndex((index + n - 1) % n)}>←</button>

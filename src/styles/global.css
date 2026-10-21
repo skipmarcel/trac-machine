@@ -146,7 +146,8 @@ img, video { display: block; max-width: 100%; }
 @media (hover: none), (max-width: 720px) { .follow { display: none; } }
 
 /* ---------- Case study ---------- */
-.case__hdr { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 240px), 1fr)); gap: 12px; border-top: 1px solid var(--ink); padding-top: 16px; margin-bottom: var(--gap2); font-family: var(--mono); font-size: 14px; }
+.case__hdr { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 240px), 1fr)); gap: 12px; border-top: 1px solid var(--ink); padding-top: 16px; margin-bottom: var(--gap2); font-family: var(--mono); font-size: clamp(16px, 1.4vw, 20px); }
+.case__title { font-weight: 700; }
 .case__nav { display: flex; gap: 6px; flex-wrap: wrap; align-items: center; margin: calc(-1 * var(--gap1)) 0 var(--gap2); font-family: var(--mono); font-size: 13px; }
 .case__nav button { height: 34px; min-width: 34px; padding: 0 10px; border: 1px solid var(--soft); border-radius: var(--rad); background: transparent; color: var(--ink); cursor: pointer; font: inherit; transition: all .25s; }
 .case__nav button:hover { border-color: var(--ink); }
