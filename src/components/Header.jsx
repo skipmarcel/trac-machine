@@ -8,7 +8,7 @@ export default function Header({ isMobile, menuOpen, setMenuOpen, overHero }) {
     return (
       <header className={'header' + (menuOpen ? ' is-open' : overHero ? ' is-clear' : '')}>
         <div className="header__bar">
-          <a href="#top" className="header__brand">Trac Machine</a>
+          <a href="#top" className="header__brand">TRAC MACHINE</a>
           <button className="menu-btn" aria-expanded={menuOpen} onClick={() => setMenuOpen(!menuOpen)}>
             {menuOpen ? 'Close' : 'Menu'}
           </button>
@@ -25,7 +25,7 @@ export default function Header({ isMobile, menuOpen, setMenuOpen, overHero }) {
   return (
     <header className={'header' + (overHero ? ' is-clear' : '')}>
       <div className="header__grid">
-        <a href="#top" className="header__brand">Trac Machine</a>
+        <a href="#top" className="header__brand">TRAC MACHINE</a>
         <nav className="header__links">
           {LINKS.map(([href, label]) => <a key={href} href={href} data-nav="">{label}</a>)}
           <a href={RESUME} target="_blank" rel="noopener noreferrer" data-nav="" className="accent">Resume →</a>
