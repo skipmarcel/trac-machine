@@ -29,13 +29,13 @@ src/
     Header.jsx             desktop grid nav + mobile menu (≤720px); frosted while over the photo
     Hero.jsx               HeroPhoto (BSA photo band) + TRAC/MACHINE blur-in title + intro
     Work.jsx               "Selected work" rows + cursor-follow preview
-    CaseStudy.jsx          case switcher, hero media + hotspots, copy, detail images (+ optional label / second tall box)
+    CaseStudy.jsx          case switcher, hero media + design-notes bar, copy, detail images (+ optional label / second tall box)
     About.jsx              portrait + bio
     Contact.jsx            dark contact card
   hooks/useMediaQuery.js
   lib/
     tm-motion.js           scroll reveals, parallax, cursor-follow preview
-    tm-interact.js         heading reveals, section scale-in, hotspot pulse, nav states
+    tm-interact.js         heading reveals, section scale-in, design-note number pulse, nav states
   styles/global.css        design tokens (CSS variables) + all component styles
 ```
 
@@ -43,7 +43,7 @@ src/
 
 - **Case copy, headlines, links, images:** `src/data/projects.jsx`. Each project is one object. Inline links use the `<L href>` helper.
 - **Add a case:** add an object to `projects`, put its images in `public/assets/case/`. The work list, case-number buttons and count update automatically.
-- **Hotspots:** `spots({ 1: 'Label' }, { 1: { x: '20%', y: '40%' } })` on a project overrides the default labels and positions. Cases 04 and 07 still use the default placeholder labels.
+- **Design notes (bar under each hero image):** `spots({ 1: 'Label' })` on a project sets the numbered notes; `.case__notes` / `.note` in `global.css` style the bar. The x/y positions are left over from the old on-image hotspots and are no longer used. Cases 04 and 07 still use the default placeholder labels.
 - **Colours, spacing, radius:** CSS variables at the top of `global.css`. A gray "Mist" theme is noted there.
 - **Email / resume / socials:** `src/config.js`.
 - **Hero photo framing:** `.hero-photo__img` in `global.css`: `background-size` (zoom) and `background-position` (`right -34vw top 14%`; a more negative right value pushes the bike further right). The photo fade is `.hero-photo__fade`.
@@ -63,7 +63,7 @@ src/
 - `data-parallax="0.08"` → parallax depth
 - `data-sec` → section scale-in on scroll
 - `data-follow-zone`, `data-preview`, `data-preview-img` → cursor-follow preview circle in Work
-- `data-spot` → pulsing hotspots
+- `data-spot` → pulsing numbers in the design-notes bar
 - `data-btn`, `data-nav` → press feedback and nav hover/active states
 
 All of it respects `prefers-reduced-motion`. React StrictMode is left off on purpose, because these scripts attach DOM listeners once.

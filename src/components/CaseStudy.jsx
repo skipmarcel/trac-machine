@@ -9,17 +9,6 @@ function Fill({ src, video, fit = 'cover' }) {
 
 const Caption = ({ text }) => (text ? <div className="caption">{text}</div> : null);
 
-// Hotspot labels open to the right. If the open label would run past the image's right edge
-// (small phones), slide the whole pill left just enough to fit; slide it back on close.
-const SPOT_PAD = 8;
-function fitSpot(e) {
-  const s = e.currentTarget, box = s.parentElement.getBoundingClientRect(), r = s.getBoundingClientRect();
-  const open = s.querySelector('.spot__n').offsetWidth + s.querySelector('.spot__label').scrollWidth;   // full open width
-  const over = r.left + open - (box.right - SPOT_PAD);
-  s.style.transform = over > 0 ? `translateX(${-Math.min(over, r.left - box.left - SPOT_PAD)}px)` : '';
-}
-const unfitSpot = (e) => { e.currentTarget.style.transform = ''; };
-
 // Rendered twice (under the headline on desktop, under d2 on mobile); CSS shows one per layout.
 const Pattern = ({ item, where }) => (
   <div className={'media case__pattern case__pattern--' + where} data-reveal="clip" data-img="" style={{ aspectRatio: item.aspect }}>
@@ -57,18 +46,21 @@ export default function CaseStudy({ projects, index, setIndex }) {
 
       {/* key remounts the case so reveal animations replay on every switch */}
       <div key={p.n} className={'case__grid case--' + p.n}>
-        <div className="media case__hero" data-reveal="clip" data-img="" data-demo="" style={heroBox}>
+        <div className={'media case__hero' + (p.spots.length ? ' case__hero--notes' : '')} data-reveal="clip" data-img="" data-demo="" style={heroBox}>
           <div data-parallax={p.hero.parallax ? '0.08' : '0'}
             style={{ position: 'absolute', inset: p.hero.parallax ? '-8% 0' : '0', background: p.hero.bg || 'transparent' }}>
             <Fill src={p.hero.src} video={p.hero.video} fit={p.hero.fit} />
           </div>
-          {p.spots.map((h) => (
-            <div key={h.n} className="spot" data-spot="" tabIndex={0} style={{ left: h.x, top: h.y }}
-              onMouseEnter={fitSpot} onFocus={fitSpot} onMouseLeave={unfitSpot} onBlur={unfitSpot}>
-              <span className="spot__n">{h.n}</span><span className="spot__label">{h.label}</span>
-            </div>
-          ))}
         </div>
+
+        {/* design notes bar attached under the hero (was numbered hotspots over the image) */}
+        {p.spots.length > 0 && (
+          <div className="case__notes" data-reveal="up" data-delay="150">
+            {p.spots.map((h) => (
+              <div key={h.n} className="note"><span className="note__n" data-spot="">{h.n}</span><span>{h.label}</span></div>
+            ))}
+          </div>
+        )}
 
         <div className="case__text">
           <div className="case__lead">

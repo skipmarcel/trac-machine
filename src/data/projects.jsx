@@ -86,7 +86,7 @@ export const projects = [
       <><L href="https://www.mountainviewheritage.com/">Mountain View Heritage</L> is a small, family-run farm in Oregon City, OR focused on nose-to-tail practices and whole-hog butchery. They focus primarily on providing educational workshops around how to raise and process heritage breed pigs. This is an ongoing project for me. We’re working together to create a logo, online presence, and a look that suits the feel of their business.</>
     ),
     approach: 'Approach: drawing from old butcher-shop charts and farmhouse signage, the logo and visual system aim to feel handmade, educational and unmistakably Oregon.',
-    hero: { src: C + 'tm-case05-hero.webp', fit: 'contain', bg: '#3c3022' },
+    hero: { src: C + 'tm-case05-hero.jpg', aspect: '2400 / 1447' },
     d2: { src: C + 'tm-case05-2.webp' },
     d3: { video: A + 'mountain-view-heritage.mp4', label: 'Logo design captured with Procreate time lapse' },
     spots: spots({ 3: 'Hand painted original' }),
