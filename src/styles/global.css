@@ -92,8 +92,13 @@ img, video { display: block; max-width: 100%; }
   .hero__stage { min-height: calc(var(--band) - 53px - clamp(40px, 40vh, 96px)); padding-bottom: 7svh; }
 }
 .hero__trac { font-family: var(--mono); font-size: 13px; color: rgba(255, 255, 255, .75); margin-bottom: var(--gap2); white-space: pre; }
-/* desktop: sized from the title's font size so the full "Tyler Russell Adams' Concept Machine" ends where "TRAC" ends (.1145 = measured ratio) */
-@media (min-width: 721px) { .hero__trac { font-size: calc(clamp(88px, 21.5vw, 420px) * var(--hero-scale) * .1145); } }
+/* desktop: sized from the title's font size so the full "Tyler Russell Adams' Concept" ends where "TRAC" ends (.1472 = measured ratio) */
+/* version 2 (grow): word tails start collapsed; Hero.jsx TracGrow animates their width */
+.trac-grow__rest { position: relative; display: inline-block; overflow: hidden; vertical-align: bottom; white-space: pre; width: 1ch; }   /* closed = one dot wide */
+.trac-grow > span:last-child .trac-grow__rest { width: 0; }   /* CONCEPT has no dot */
+.trac-grow__txt { display: inline-block; opacity: 0; }
+.trac-grow__dot { position: absolute; left: 0; top: 0; }   /* sits on top of the closed tail */
+@media (min-width: 721px) { .hero__trac { font-size: calc(clamp(88px, 21.5vw, 420px) * var(--hero-scale) * .1472); } }
 .hero__title {
   margin: 0; cursor: pointer; filter: url(#tm-round);
   font-weight: 550; font-stretch: 88%; line-height: .8; letter-spacing: -.055em;

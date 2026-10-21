@@ -1,16 +1,19 @@
-import { useEffect, useLayoutEffect, useRef } from 'react';
-import { RESUME } from '../config.js';
+import { useEffect, useLayoutEffect, useRef, useState } from 'react';
+import { RESUME, TRAC_EFFECT } from '../config.js';
 
 const reduceMotion = () => matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-// "T.R.A.C" ⇄ "Tyler Russell Adams' Concept Machine" scramble loop above the title.
-function useTracMorph(ref) {
+// "T.R.A.C" ⇄ "Tyler Russell Adams' Concept" scramble loop above the title.
+// T.R.A.C is all accent orange; in the long form only each word's first letter is.
+function useTracMorph(ref, on = true) {
   useEffect(() => {
-    const A = 'T.R.A.C', B = "Tyler Russell Adams' Concept Machine", GL = '!<>-_/[]{}=+*^?#ABCDEFGHJKLMNPRSTVWXYZ';
+    if (!on) return;
+    const A = 'T.R.A.C', B = "Tyler Russell Adams' Concept", GL = '!<>-_/[]{}=+*^?#ABCDEFGHJKLMNPRSTVWXYZ';
     let dead = false, timer, raf;
     const set = (s) => {
       const el = ref.current; if (!el) return;
-      if (s === B) el.innerHTML = "Tyler Russell Adams' Concept <span class=\"accent\">Machine</span>";
+      if (s === B) el.innerHTML = B.split(' ').map((w) => '<span class="accent">' + w[0] + '</span>' + w.slice(1)).join(' ');
+      else if (s === A) el.innerHTML = '<span class="accent">' + A + '</span>';
       else el.textContent = s;
     };
     if (reduceMotion()) { set(B); return; }
@@ -33,8 +36,68 @@ function useTracMorph(ref) {
     const cycle = () => { timer = setTimeout(() => morph(A, B, 1300, () => { timer = setTimeout(() => morph(B, A, 900, cycle), 3800); }), 2200); };
     cycle();
     return () => { dead = true; clearTimeout(timer); cancelAnimationFrame(raf); };
-  }, [ref]);
+  }, [ref, on]);
 }
+
+// Version 2: "T.R.A.C" → "TYLER RUSSELL ADAMS' CONCEPT". Each word grows out of its orange initial,
+// left to right, one word after another; holds, then folds back and loops.
+const GROW = [['T', 'YLER '], ['R', 'USSELL '], ['A', "DAMS' "], ['C', 'ONCEPT']];
+const GROW_MS = { start: 1200, word: 1100, stagger: 450, hold: 3800, back: 1300, backStagger: 380, rest: 2200 };
+
+function TracGrow() {
+  const ref = useRef(null);
+  useEffect(() => {
+    const root = ref.current; if (!root) return;
+    // Each word's tail is a clipping box. Closed, it's exactly as wide as its dot (0 for the last word), and the
+    // dot sits on top of it; open, it's as wide as the text. Its width only ever moves between those two values,
+    // so the letters after it glide into place and never overshoot.
+    const rests = [...root.querySelectorAll('.trac-grow__rest')];
+    const txts = rests.map((r) => r.querySelector('.trac-grow__txt')), dots = rests.map((r) => r.querySelector('.trac-grow__dot'));
+    // monospace font: every character (and the dot) is exactly 1ch wide, so widths stay right at any font size
+    const full = GROW.map(([, rest]) => rest.length + 'ch'), shut = dots.map((d) => (d ? '1ch' : '0ch'));
+    if (reduceMotion()) { rests.forEach((r, i) => { r.style.width = full[i]; }); txts.forEach((t) => { t.style.opacity = 1; }); dots.forEach((d) => d && (d.style.opacity = 0)); return; }
+    const E = 'cubic-bezier(.65,0,.35,1)', EB = 'cubic-bezier(.4,0,.2,1)';   // grow / fold-back easing
+    let dead = false, timer, anims = [];
+    const run = (open) => {
+      if (dead) return;
+      anims.forEach((a) => a.cancel());   // safe: every animation uses fill 'both', so words waiting their turn hold their start state
+      const n = rests.length, t = open ? GROW_MS.word : GROW_MS.back, gap = open ? GROW_MS.stagger : GROW_MS.backStagger;
+      anims = rests.flatMap((r, i) => {
+        const delay = (open ? i : n - 1 - i) * gap;   // grows left→right, folds right→left
+        const w = [{ width: shut[i] }, { width: full[i] }];
+        const out = [];
+        if (open) {
+          out.push(r.animate(w, { duration: t, delay, easing: E, fill: 'both' }));
+          out.push(txts[i].animate([{ opacity: 0 }, { opacity: 1 }], { duration: t * .3, delay, easing: E, fill: 'both' }));
+          if (dots[i]) out.push(dots[i].animate([{ opacity: 1 }, { opacity: 0 }], { duration: t * .25, delay, easing: E, fill: 'both' }));
+        } else {
+          // fold: the tail slides shut, its letters fade over the last stretch, and the dot fades back in on top
+          out.push(r.animate(w.slice().reverse(), { duration: t, delay, easing: EB, fill: 'both' }));
+          out.push(txts[i].animate([{ opacity: 1 }, { opacity: 0 }], { duration: t * .45, delay: delay + t * .55, easing: EB, fill: 'both' }));
+          if (dots[i]) out.push(dots[i].animate([{ opacity: 0 }, { opacity: 1 }], { duration: t * .35, delay: delay + t * .65, easing: EB, fill: 'both' }));
+        }
+        return out;
+      });
+      const total = t + (n - 1) * gap;
+      timer = setTimeout(() => run(!open), total + (open ? GROW_MS.hold : GROW_MS.rest));
+    };
+    timer = setTimeout(() => run(true), GROW_MS.start);
+    return () => { dead = true; clearTimeout(timer); anims.forEach((a) => a.cancel()); };
+  }, []);
+  return (
+    <span ref={ref} className="trac-grow" aria-label="Tyler Russell Adams' Concept">
+      {GROW.map(([init, rest], i) => (
+        <span key={init} aria-hidden="true"><span className="accent">{init}</span>
+          <span className="trac-grow__rest">
+            {i < GROW.length - 1 && <span className="trac-grow__dot accent">.</span>}
+            <span className="trac-grow__txt">{rest}</span>
+          </span></span>
+      ))}
+    </span>
+  );
+}
+
+const tracEffect = () => new URLSearchParams(location.search).get('trac') || TRAC_EFFECT;
 
 const Letters = ({ text, cRef }) => [...text].map((ch, i) =>
   ch === 'C'
@@ -62,8 +125,9 @@ export function HeroPhoto() {
 export default function Hero({ isMobile }) {
   const tracRef = useRef(null), h1Ref = useRef(null);
   const c1Ref = useRef(null), c2Ref = useRef(null);
+  const [grow] = useState(() => tracEffect() === 'grow');
 
-  useTracMorph(tracRef);
+  useTracMorph(tracRef, !grow);
 
   // Indent "MACHINE" so its C sits directly under the C of "TRAC".
   useLayoutEffect(() => {
@@ -94,7 +158,10 @@ export default function Hero({ isMobile }) {
   return (
     <section id="top" className="hero">
       <div className="hero__stage">
-        <div className="hero__trac"><span ref={tracRef} aria-label="Tyler Russell Adams' Concept Machine">T.R.A.C</span></div>
+        <div className="hero__trac">
+          {grow ? <TracGrow />
+            : <span ref={tracRef} aria-label="Tyler Russell Adams' Concept"><span className="accent">T.R.A.C</span></span>}
+        </div>
         <svg aria-hidden="true" width="0" height="0" style={{ position: 'absolute' }}>
           <filter id="tm-round" colorInterpolationFilters="sRGB" x="-5%" y="-5%" width="110%" height="110%">
             <feGaussianBlur in="SourceGraphic" stdDeviation={rnd} />
