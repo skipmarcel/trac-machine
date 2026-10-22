@@ -129,3 +129,15 @@ export const projects = [
     spots: spots({ 1: 'Print and social key art', 2: 'Mobile landing page', 3: 'Logo and brand mark' }),
   },
 ];
+
+// Featured items: shown in accent orange above the numbered "Selected work" list, outside the numbering.
+// heroOnly: the gallery is just the hero media (no notes bar, text or detail images); note: optional caption under it.
+export const featured = [
+  {
+    n: 'CR', title: 'For CleaResult (Motion Graphics and video work example)', disc: 'Motion',
+    heroOnly: true,
+    hero: { video: A + 'cr-data-story_1.mp4', aspect: '16 / 9' },
+    note: 'Videos are from Adobe Stock footage and projections derived from CleaResult public data. Tech used: Adobe Media Encoder, Adobe Ilustrator, Adobe Photoshop, Claude Design and Claude Code.',
+    spots: [],
+  },
+];

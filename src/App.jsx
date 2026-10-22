@@ -6,7 +6,10 @@ import CaseStudy from './components/CaseStudy.jsx';
 import About from './components/About.jsx';
 import Contact from './components/Contact.jsx';
 import useMediaQuery from './hooks/useMediaQuery.js';
-import { projects } from './data/projects.jsx';
+import { projects, featured } from './data/projects.jsx';
+
+// Case study order: featured items first, then the numbered projects.
+const cases = [...featured, ...projects];
 import { MOTION, MOBILE_QUERY } from './config.js';
 
 const reduceMotion = () => matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -26,7 +29,7 @@ export default function App() {
   const rootRef = useRef(null);
   const isMobile = useMediaQuery(MOBILE_QUERY);
   const [menuOpen, setMenuOpen] = useState(false);
-  const [caseIdx, setCaseIdx] = useState(0);
+  const [caseIdx, setCaseIdx] = useState(featured.length);   // open on the first numbered case
   const [overHero, setOverHero] = useState(true);
 
   // Header text/background follow the photo fade: --hdr-t is how faded the band is behind the
@@ -87,8 +90,8 @@ export default function App() {
       <HeroPhoto />
       <Header isMobile={isMobile} menuOpen={menuOpen} setMenuOpen={setMenuOpen} overHero={overHero} />
       <Hero isMobile={isMobile} />
-      <Work projects={projects} onOpen={openCase} />
-      <CaseStudy projects={projects} index={caseIdx} setIndex={setCaseIdx} />
+      <Work featured={featured} projects={projects} onOpen={openCase} />
+      <CaseStudy projects={cases} index={caseIdx} setIndex={setCaseIdx} />
       <About />
       <Contact />
     </div>

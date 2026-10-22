@@ -34,12 +34,12 @@ export default function CaseStudy({ projects, index, setIndex }) {
   return (
     <section id="case" className="section" data-sec="">
       <div className="case__hdr">
-        <span data-scramble="">Case {p.n}</span><span className="case__title">{p.title}</span><span className="accent">{p.disc}</span>
+        <span data-scramble="">{p.heroOnly ? 'Featured' : 'Case ' + p.n}</span><span className="case__title">{p.title}</span><span className="accent">{p.disc}</span>
       </div>
       <div className="case__nav">
         <button className="case__arrow" aria-label="Previous case" onClick={() => setIndex((index + n - 1) % n)}>←</button>
         {projects.map((k, i) => (
-          <button key={k.n} aria-label={k.title} className={i === index ? 'is-active' : ''} onClick={() => setIndex(i)}>{k.n}</button>
+          <button key={k.n} aria-label={k.title} className={(i === index ? 'is-active' : '') + (k.heroOnly ? ' is-featured' : '')} onClick={() => setIndex(i)}>{k.n}</button>
         ))}
         <button className="case__arrow" aria-label="Next case" onClick={() => setIndex((index + 1) % n)}>→</button>
       </div>
@@ -53,6 +53,10 @@ export default function CaseStudy({ projects, index, setIndex }) {
           </div>
         </div>
 
+        {p.note && <p className="case__note" data-reveal="up" data-delay="150">{p.note}</p>}
+
+        {/* heroOnly cases (e.g. the CleaResult reel) stop here: no notes, text or detail images */}
+        {!p.heroOnly && <>
         {/* design notes bar attached under the hero (was numbered hotspots over the image) */}
         {p.spots.length > 0 && (
           <div className="case__notes" data-reveal="up" data-delay="150">
@@ -85,6 +89,7 @@ export default function CaseStudy({ projects, index, setIndex }) {
           <TallBox item={p.d3} delay="150" />
           {p.d3b && <TallBox item={p.d3b} delay="220" />}
         </div>
+        </>}
       </div>
     </section>
   );
