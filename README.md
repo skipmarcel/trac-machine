@@ -51,7 +51,6 @@ src/
 - **Nav over the photo:** `.header` in `global.css` mixes white → ink text and clear → solid background by `--hdr-t`, which `App.jsx` sets on scroll from the photo's fade curve (`FADE`, same stops as the `.hero-photo` mask).
 - **Extra case image (e.g. Toro Bravo pattern):** `pattern: { src, alt, aspect, caption }` in `projects.jsx`. Shows under the headline on desktop and under the d2 image on mobile (`.case__pattern` in `global.css`).
 - **Graphic under the Approach text (e.g. Seaworthy fish logo):** `art: { src, alt }` in `projects.jsx`; size via `.case__art` in `global.css`.
-- **Case 08 second tall image:** set `d3b: { src: C + 'tm-case08-4.webp' }` in `projects.jsx` and drop the file in `public/assets/case/`.
 - **Motion:** switch effects with the `MOTION` values in `src/config.js` (options listed inline).
 
 ## How the motion works

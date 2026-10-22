@@ -125,7 +125,7 @@ export const projects = [
     hero: { src: C + 'tm-case08-hero.webp', aspect: '1200 / 720' },
     d2: { src: C + 'tm-case08-2.webp' },
     d3: { src: C + 'tm-case08-3.webp' },
-    d3b: { src: '' }, // TODO: add photo, e.g. C + 'tm-case08-4.webp'
+    d3b: { src: C + 'tm-case08-4.jpg' },
     spots: spots({ 1: 'Print and social key art', 2: 'Mobile landing page', 3: 'Logo and brand mark' }),
   },
 ];
