@@ -131,13 +131,21 @@ export const projects = [
 ];
 
 // Featured items: shown in accent orange above the numbered "Selected work" list, outside the numbering.
-// heroOnly: the gallery is just the hero media (no notes bar, text or detail images); note: optional caption under it.
+// heroOnly: the gallery is just the hero media (no notes bar, text or detail images); intro: optional { heading, text } above it;
+// embed: optional interactive HTML page { src, title, heading, text } shown in a frame below that, with an optional
+// heading + paragraph above the frame (files live in public/assets/embeds/).
 export const featured = [
   {
-    n: 'CR', title: 'For CleaResult (Motion Graphics and video work example)', disc: 'Motion',
+    n: 'CR', title: 'For CleaResult (Motion Graphics and video work example)',
+    brand: 'CleaResult',   // shown bold in the Selected work row
     heroOnly: true,
     hero: { video: A + 'cr-data-story_1.mp4', aspect: '16 / 9' },
-    note: 'Videos are from Adobe Stock footage and projections derived from CleaResult public data. Tech used: Adobe Media Encoder, Adobe Ilustrator, Adobe Photoshop, Claude Design and Claude Code.',
+    embed: {
+      src: A + 'embeds/clearesult-design-system-tyler-adams.html', title: 'CLEAResult design system click-through deck',
+      heading: 'CleaResult Design Template Approach',
+      text: 'Building a reusable template and brand design system lets non-designers create digital and print media quickly while keeping company colors, layouts, and typography locked and consistent.',
+    },
+    intro: { heading: 'Motion Graphics and video work using the CleaResult logo and public data', text: 'Tech used: Adobe Media Encoder, Adobe Ilustrator, Adobe Photoshop, Claude Design and Claude Code.' },
     spots: [],
   },
 ];

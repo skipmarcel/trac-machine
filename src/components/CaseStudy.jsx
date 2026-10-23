@@ -9,6 +9,36 @@ function Fill({ src, video, fit = 'cover' }) {
 
 const Caption = ({ text }) => (text ? <div className="caption">{text}</div> : null);
 
+// Claude Design decks (<deck-stage>) hide a small black control pill until hover. For embeds, restyle it from
+// here (same-origin frame) so it's always visible, larger and high-contrast, and survives re-exporting the deck.
+const DECK_CONTROLS_CSS = `
+  .overlay { opacity: 1 !important; pointer-events: auto !important; filter: none !important;
+    transform: translate(-50%, 0) !important; bottom: 18px; gap: 6px; padding: 6px;
+    background: #fff; color: #111; font-size: 16px; box-shadow: 0 4px 18px rgba(0,0,0,.35); }
+  .btn { height: 44px; min-width: 44px; color: #111; }
+  .btn:hover { background: rgba(0,0,0,.08); color: #111; }
+  .btn svg { width: 22px; height: 22px; }
+  .count, .count * { color: #111 !important; opacity: 1 !important; }
+  .count { padding: 0 6px; font-weight: 600; }
+  .count .sep { margin: 0 4px; color: rgba(0,0,0,.4) !important; }
+  .divider { background: rgba(0,0,0,.15) !important; }
+  .btn.reset { font-size: 14px; color: #111; padding: 0 12px 0 14px; gap: 8px; }
+  .btn.reset .kbd { min-width: 22px; height: 22px; font-size: 12px; color: #111; background: rgba(0,0,0,.08); }
+`;
+function styleDeckControls(e) {
+  const doc = e.currentTarget.contentDocument; if (!doc) return;
+  let tries = 0;
+  const t = setInterval(() => {   // the deck unpacks itself after load, so wait for it
+    const sh = doc.querySelector('deck-stage') && doc.querySelector('deck-stage').shadowRoot;
+    if (sh) {
+      if (!sh.querySelector('style[data-tm-controls]')) {
+        const s = doc.createElement('style'); s.setAttribute('data-tm-controls', ''); s.textContent = DECK_CONTROLS_CSS; sh.appendChild(s);
+      }
+      clearInterval(t);
+    } else if (++tries > 150) clearInterval(t);
+  }, 100);
+}
+
 // Rendered twice (under the headline on desktop, under d2 on mobile); CSS shows one per layout.
 const Pattern = ({ item, where }) => (
   <div className={'media case__pattern case__pattern--' + where} data-reveal="clip" data-img="" style={{ aspectRatio: item.aspect }}>
@@ -34,7 +64,7 @@ export default function CaseStudy({ projects, index, setIndex }) {
   return (
     <section id="case" className="section" data-sec="">
       <div className="case__hdr">
-        <span data-scramble="">{p.heroOnly ? 'Featured' : 'Case ' + p.n}</span><span className="case__title">{p.title}</span><span className="accent">{p.disc}</span>
+        <span data-scramble="">{p.heroOnly ? 'Featured' : 'Case ' + p.n}</span><span className="case__title">{p.title}</span>{p.disc && <span className="accent">{p.disc}</span>}
       </div>
       <div className="case__nav">
         <button className="case__arrow" aria-label="Previous case" onClick={() => setIndex((index + n - 1) % n)}>←</button>
@@ -46,6 +76,12 @@ export default function CaseStudy({ projects, index, setIndex }) {
 
       {/* key remounts the case so reveal animations replay on every switch */}
       <div key={p.n} className={'case__grid case--' + p.n}>
+        {p.intro && (
+          <div className="case__intro" data-reveal="up">
+            <h3>{p.intro.heading}</h3>
+            {p.intro.text && <p>{p.intro.text}</p>}
+          </div>
+        )}
         <div className={'media case__hero' + (p.spots.length ? ' case__hero--notes' : '')} data-reveal="clip" data-img="" data-demo="" style={heroBox}>
           <div data-parallax={p.hero.parallax ? '0.08' : '0'}
             style={{ position: 'absolute', inset: p.hero.parallax ? '-8% 0' : '0', background: p.hero.bg || 'transparent' }}>
@@ -53,7 +89,17 @@ export default function CaseStudy({ projects, index, setIndex }) {
           </div>
         </div>
 
-        {p.note && <p className="case__note" data-reveal="up" data-delay="150">{p.note}</p>}
+        {p.embed && p.embed.heading && (
+          <div className="case__intro case__intro--embed" data-reveal="up">
+            <h3>{p.embed.heading}</h3>
+            {p.embed.text && <p>{p.embed.text}</p>}
+          </div>
+        )}
+        {p.embed && (
+          <div className="case__embed" data-reveal="up" data-delay="200">
+            <iframe src={p.embed.src} title={p.embed.title} loading="lazy" allowFullScreen onLoad={styleDeckControls} />
+          </div>
+        )}
 
         {/* heroOnly cases (e.g. the CleaResult reel) stop here: no notes, text or detail images */}
         {!p.heroOnly && <>

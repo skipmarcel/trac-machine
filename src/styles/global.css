@@ -137,7 +137,9 @@ img, video { display: block; max-width: 100%; }
 /* featured items above the numbered list: accent orange, no number column, set apart by a gap */
 .work__featured { margin-bottom: var(--gap3); }
 .row--featured { grid-template-columns: auto minmax(0, 1fr) auto; color: var(--acc); }
-.row__lead { font-size: clamp(17px, 1.6vw, 24px); line-height: 1.05; }   /* arrow before the featured title, same size as the title */
+/* featured row reads a size up from the numbered rows so it isn't overlooked */
+.row--featured .row__title, .row__lead { font-size: clamp(20px, 2vw, 30px); line-height: 1.1; }
+.row--featured strong { font-weight: 700; }
 .case__nav button.is-featured { color: var(--acc); border-color: var(--acc); }
 .case__nav button.is-featured.is-active { background: var(--acc); color: #fff; }
 .row__n { font-family: var(--mono); font-size: 14px; }
@@ -208,7 +210,18 @@ img, video { display: block; max-width: 100%; }
 .case__d3col { grid-column: span 2; margin-top: clamp(40px, 14vw, 220px); min-width: 0; display: flex; flex-direction: column; gap: 10px; align-self: start; }
 .case__d3col--split { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--gap1); }
 .case__d3 { aspect-ratio: 3 / 4; }
-.case__note { grid-column: 1 / -1; margin: var(--gap1) 0 0; max-width: 80ch; font-family: var(--mono); font-size: 13px; line-height: 1.5; color: var(--muted); }   /* caption under a hero (e.g. the CleaResult reel) */
+/* heading + short paragraph above a hero (e.g. the CleaResult reel) */
+.case__intro { grid-column: 1 / -1; margin-bottom: var(--gap2); }
+.case__intro h3 { margin: 0; max-width: 30ch; font-size: clamp(22px, 2.4vw, 34px); font-weight: 500; line-height: 1.1; letter-spacing: -.03em; text-wrap: balance; }
+.case__intro--embed { margin-top: var(--sec-pad); }   /* the deck's heading starts a new block below the video */
+.case__intro--embed + .case__embed { margin-top: 0; }
+.case__intro p { margin: var(--gap1) 0 0; max-width: 60ch; line-height: 1.55; color: var(--body); text-wrap: pretty; }
+/* interactive HTML embed (e.g. the CLEAResult click-through deck). The frame's height follows its width:
+   a 16:9 slide plus 164px for the deck's (enlarged) controls, minus the deck's 188px thumbnail rail, which it shows when
+   the frame is at least 641px wide. */
+.case__embed { grid-column: 1 / -1; margin-top: var(--gap3); container-type: inline-size; border-radius: var(--rad); overflow: hidden; background: #111; }
+.case__embed iframe { display: block; width: 100%; border: 0; height: calc((100cqw - 188px) * 9 / 16 + 164px); }
+@container (max-width: 640px) { .case__embed iframe { height: calc(100cqw * 9 / 16 + 164px); } }
 .case__label { font-family: var(--mono); font-size: 13px; line-height: 1.35; color: var(--muted); }
 .media--empty { background: var(--surf); display: grid; place-items: center; font-family: var(--mono); font-size: 12px; color: var(--muted); text-align: center; padding: 12px; }
 @media (max-width: 720px) {
