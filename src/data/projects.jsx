@@ -137,6 +137,7 @@ export const projects = [
 export const featured = [
   {
     n: 'CR', title: 'For CleaResult (Motion Graphics and video work example)',
+    label: 'For CleaResult',   // shorter text for the Selected work row (title is still used in the gallery header)
     brand: 'CleaResult',   // shown bold in the Selected work row
     heroOnly: true,
     hero: { video: A + 'cr-data-story_1.mp4', aspect: '16 / 9' },

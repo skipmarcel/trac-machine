@@ -20,7 +20,7 @@ export default function Work({ featured = [], projects, onOpen }) {
             <a key={p.n} href="#case" className="row row--featured"
               onClick={(e) => { e.preventDefault(); onOpen(i); }}>
               <span className="row__lead" aria-hidden="true">→</span>
-              <span className="row__title">{withBrand(p.title, p.brand)}</span>
+              <span className="row__title">{withBrand(p.label || p.title, p.brand)}</span>
               <span className="row__meta"><span data-ico="">→</span></span>
             </a>
           ))}

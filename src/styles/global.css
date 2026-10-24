@@ -138,7 +138,7 @@ img, video { display: block; max-width: 100%; }
 .work__featured { margin-bottom: var(--gap3); }
 .row--featured { grid-template-columns: auto minmax(0, 1fr) auto; color: var(--acc); }
 /* featured row reads a size up from the numbered rows so it isn't overlooked */
-.row--featured .row__title, .row__lead { font-size: clamp(20px, 2vw, 30px); line-height: 1.1; }
+.row--featured .row__title, .row__lead { font-size: clamp(24px, 2.6vw, 38px); line-height: 1.1; }
 .row--featured strong { font-weight: 700; }
 .case__nav button.is-featured { color: var(--acc); border-color: var(--acc); }
 .case__nav button.is-featured.is-active { background: var(--acc); color: #fff; }
