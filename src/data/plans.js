@@ -12,7 +12,7 @@ export const plans = [
     per: 'one time',
     blurb: 'Locks in a start date for a logo, identity, print or web project. Credited to the final invoice.',
     cta: 'Pay deposit →',
-    stripeId: 'prod_VXOfdZFMoR2S7W',
+    stripeId: 'prod_VXP6t9Dvff9Ztp',
   },
   {
     id: 'retainer',
@@ -21,7 +21,7 @@ export const plans = [
     per: 'per month',
     blurb: 'Ongoing design support each month: social graphics, updates, print pieces. Cancel any time.',
     cta: 'Start retainer →',
-    stripeId: 'prod_VXOgLUAO4y5rUE',
+    stripeId: 'prod_VXP4X9nFjQNmTy',
   },
 ];
 
