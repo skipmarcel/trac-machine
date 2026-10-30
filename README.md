@@ -26,7 +26,8 @@ src/
   config.js                email / resume / social links, motion settings
   data/projects.jsx        ALL case-study content (edit copy here)
   components/
-    Header.jsx             desktop grid nav + mobile menu (≤720px); frosted while over the photo
+    Header.jsx             desktop grid nav + hamburger menu (≤720px); frosted while over the photo
+    WorkWithTrac.jsx       payments page (/work-with-trac/)
     Hero.jsx               HeroPhoto (BSA photo band) + TRAC/MACHINE blur-in title + intro
     Work.jsx               "Selected work" rows + cursor-follow preview
     CaseStudy.jsx          case switcher, hero media + design-notes bar, copy, detail images (+ optional label / second tall box)
@@ -53,6 +54,15 @@ src/
 - **Graphic under the Approach text (e.g. Seaworthy fish logo):** `art: { src, alt }` in `projects.jsx`; size via `.case__art` in `global.css`.
 - **Motion:** switch effects with the `MOTION` values in `src/config.js` (options listed inline).
 
+## Work With TRAC (payments)
+
+`/work-with-trac/` is a second Vite page (`work-with-trac/index.html` → `src/work.jsx` → `components/WorkWithTrac.jsx`). Its buttons POST to `api/checkout.js`, a Vercel serverless function that creates a Stripe Checkout session and sends the visitor to Stripe's hosted payment page. The site never sees card details.
+
+- **Packages:** `src/data/plans.js`. Each has a Stripe `stripeId`: a product ID (`prod_…`, uses its default price) or a price ID (`price_…`). A recurring price starts a subscription, a one-off price takes a single payment. The function only accepts IDs listed there. Test and live mode IDs differ.
+- **Custom amount:** the visitor enters an amount, picks one time or monthly, and can add a note (saved on the Stripe payment).
+- **Keys:** set `STRIPE_SECRET_KEY` (and optionally `SITE_URL`) in Vercel → Settings → Environment Variables. See `.env.example`. The publishable key isn't needed.
+- **Local testing:** `npm run dev` serves the page but not `/api`. Use `npx vercel dev` with a `.env.local` holding your **test** secret key.
+
 ## How the motion works
 
 `tm-motion.js` and `tm-interact.js` are framework-free scripts that attach to `window.TM` / `window.TMX`. `App.jsx` initialises them on the root element and re-scans after the case changes. They work through data attributes:
@@ -70,7 +80,7 @@ All of it respects `prefers-reduced-motion`. React StrictMode is left off on pur
 ## Responsive
 
 The breakpoint is 720px (`MOBILE_QUERY` in config, plus `@media (max-width: 720px)` in CSS). Below it:
-- the nav becomes a Menu button with a full-width link list (44px+ tap targets)
+- the nav becomes a hamburger button with a full-width link list (44px+ tap targets)
 - work rows stack (meta moves under the title)
 - case images go full width
 - the hero rounding filter is softened
