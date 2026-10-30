@@ -58,7 +58,7 @@ src/
 
 `/work-with-trac/` is a second Vite page (`work-with-trac/index.html` → `src/work.jsx` → `components/WorkWithTrac.jsx`). Its buttons POST to `api/checkout.js`, a Vercel serverless function that creates a Stripe Checkout session and sends the visitor to Stripe's hosted payment page. The site never sees card details.
 
-- **Packages:** `src/data/plans.js`. Each has a Stripe `priceId`; a recurring price starts a subscription, a one-off price takes a single payment. The function only accepts price IDs listed there.
+- **Packages:** `src/data/plans.js`. Each has a Stripe `stripeId`: a product ID (`prod_…`, uses its default price) or a price ID (`price_…`). A recurring price starts a subscription, a one-off price takes a single payment. The function only accepts IDs listed there. Test and live mode IDs differ.
 - **Custom amount:** the visitor enters an amount, picks one time or monthly, and can add a note (saved on the Stripe payment).
 - **Keys:** set `STRIPE_SECRET_KEY` (and optionally `SITE_URL`) in Vercel → Settings → Environment Variables. See `.env.example`. The publishable key isn't needed.
 - **Local testing:** `npm run dev` serves the page but not `/api`. Use `npx vercel dev` with a `.env.local` holding your **test** secret key.

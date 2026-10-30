@@ -21,8 +21,12 @@ export default async function handler(req, res) {
   if (body.plan) {
     const plan = plans.find((p) => p.id === body.plan);
     if (!plan) return res.status(400).json({ error: 'Unknown package.' });
-    // Read the mode off the price itself, so a recurring price always becomes a subscription.
-    const price = await stripe.prices.retrieve(plan.priceId).catch(() => null);
+    // A product ID charges the product's default price. Read the mode off the price itself, so a recurring price
+    // always becomes a subscription.
+    const price = await (plan.stripeId.startsWith('prod_')
+      ? stripe.products.retrieve(plan.stripeId, { expand: ['default_price'] }).then((p) => p.active && p.default_price)
+      : stripe.prices.retrieve(plan.stripeId)
+    ).catch(() => null);
     if (!price || !price.active) return res.status(500).json({ error: 'That package is not available right now.' });
     lineItems = [{ price: price.id, quantity: 1 }];
     mode = price.type === 'recurring' ? 'subscription' : 'payment';
