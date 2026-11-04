@@ -1,3 +1,5 @@
+import { useLayoutEffect, useRef, useState } from 'react';
+
 function Fill({ src, video, fit = 'cover' }) {
   return (
     <>
@@ -57,6 +59,25 @@ function TallBox({ item, delay }) {
   );
 }
 
+// A live site shown as a display window: drawn at a fixed desktop size and scaled to fit, so phones see the same
+// layout. pointer-events are off (see .case__site) so it can't trap page scrolling.
+const SITE_W = 1280, SITE_H = 748;
+function SiteFrame({ item }) {
+  const box = useRef(null);
+  const [scale, setScale] = useState(1);
+  useLayoutEffect(() => {
+    const ro = new ResizeObserver(() => setScale(box.current.clientWidth / SITE_W));
+    ro.observe(box.current);
+    return () => ro.disconnect();
+  }, []);
+  return (
+    <div ref={box} className="media case__site" data-reveal="clip" style={{ aspectRatio: `${SITE_W} / ${SITE_H}` }}>
+      <iframe src={item.src} title={item.title} loading="lazy" tabIndex={-1} allow="autoplay"
+        style={{ width: SITE_W, height: SITE_H, transform: `scale(${scale})` }} />
+    </div>
+  );
+}
+
 export default function CaseStudy({ projects, index, setIndex }) {
   const p = projects[index], n = projects.length;
   const heroBox = p.hero.aspect ? { aspectRatio: p.hero.aspect } : { height: 'clamp(320px,62vw,820px)' };
@@ -111,6 +132,8 @@ export default function CaseStudy({ projects, index, setIndex }) {
             ))}
           </div>
         )}
+
+        {p.site && <SiteFrame item={p.site} />}
 
         <div className="case__text">
           <div className="case__lead">

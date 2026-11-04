@@ -231,6 +231,9 @@ img, video { display: block; max-width: 100%; }
 .case__embed { grid-column: 1 / -1; margin-top: var(--gap3); container-type: inline-size; border-radius: var(--rad); overflow: hidden; background: #111; }
 .case__embed iframe { display: block; width: 100%; border: 0; height: calc((100cqw - 188px) * 9 / 16 + 164px); }
 @container (max-width: 640px) { .case__embed iframe { height: calc(100cqw * 9 / 16 + 164px); } }
+/* live site window under the hero (SiteFrame in CaseStudy.jsx) */
+.case__site { grid-column: 1 / -1; background: var(--ink); }
+.case__site iframe { position: absolute; top: 0; left: 0; border: 0; transform-origin: 0 0; pointer-events: none; }
 /* staggered iPhones instead of the tall box(es). All sizes are in cqw so the phones scale with the column.
    Width + overlap: 3 x 36 - 2 x 4 = 100. Stagger: margin-top on .phone:nth-child. */
 .case__phones { grid-column: span 2; min-width: 0; container-type: inline-size; display: flex; align-items: flex-start; align-self: start; }
@@ -242,8 +245,8 @@ img, video { display: block; max-width: 100%; }
 .phone::before { content: ''; position: absolute; top: 2.2cqw; left: 50%; width: 10.5cqw; height: 3cqw; transform: translateX(-50%); border-radius: 1.5cqw; background: var(--ink); }   /* Dynamic Island */
 .phone::after { content: ''; position: absolute; top: 15cqw; right: -.55cqw; width: .55cqw; height: 9cqw; border-radius: 0 .4cqw .4cqw 0; background: var(--muted); }   /* side button */
 @media (min-width: 721px) {
-  /* Mountain View Heritage: the portrait time lapse gives up a column so the phones are big enough to read */
-  .case--05 .case__d2, .case--05 .case__phones { grid-column: span 3; }
+  /* Mountain View Heritage: time lapse stacked above the phones, like mobile, in a centred column */
+  .case--05 .case__d2, .case--05 .case__phones { grid-column: 2 / span 4; }
 }
 .case__label { font-family: var(--mono); font-size: 13px; line-height: 1.35; color: var(--muted); }
 .media--empty { background: var(--surf); display: grid; place-items: center; font-family: var(--mono); font-size: 12px; color: var(--muted); text-align: center; padding: 12px; }
