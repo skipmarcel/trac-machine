@@ -231,13 +231,27 @@ img, video { display: block; max-width: 100%; }
 .case__embed { grid-column: 1 / -1; margin-top: var(--gap3); container-type: inline-size; border-radius: var(--rad); overflow: hidden; background: #111; }
 .case__embed iframe { display: block; width: 100%; border: 0; height: calc((100cqw - 188px) * 9 / 16 + 164px); }
 @container (max-width: 640px) { .case__embed iframe { height: calc(100cqw * 9 / 16 + 164px); } }
+/* staggered iPhones instead of the tall box(es). All sizes are in cqw so the phones scale with the column.
+   Width + overlap: 3 x 36 - 2 x 4 = 100. Stagger: margin-top on .phone:nth-child. */
+.case__phones { grid-column: span 2; min-width: 0; container-type: inline-size; display: flex; align-items: flex-start; align-self: start; }
+.phone { position: relative; flex: none; width: 36cqw; padding: 1.1cqw; border-radius: 5.6cqw; background: var(--ink); box-shadow: 0 0 0 .25cqw var(--muted), 0 2.4cqw 5cqw var(--soft); }
+.phone + .phone { margin-left: -4cqw; }
+.phone:nth-child(2) { margin-top: 7cqw; }
+.phone:nth-child(3) { margin-top: 14cqw; }
+.phone img { width: 100%; height: auto; aspect-ratio: 1170 / 2532; border-radius: 4.5cqw; }
+.phone::before { content: ''; position: absolute; top: 2.2cqw; left: 50%; width: 10.5cqw; height: 3cqw; transform: translateX(-50%); border-radius: 1.5cqw; background: var(--ink); }   /* Dynamic Island */
+.phone::after { content: ''; position: absolute; top: 15cqw; right: -.55cqw; width: .55cqw; height: 9cqw; border-radius: 0 .4cqw .4cqw 0; background: var(--muted); }   /* side button */
+@media (min-width: 721px) {
+  /* Mountain View Heritage: the portrait time lapse gives up a column so the phones are big enough to read */
+  .case--05 .case__d2, .case--05 .case__phones { grid-column: span 3; }
+}
 .case__label { font-family: var(--mono); font-size: 13px; line-height: 1.35; color: var(--muted); }
 .media--empty { background: var(--surf); display: grid; place-items: center; font-family: var(--mono); font-size: 12px; color: var(--muted); text-align: center; padding: 12px; }
 @media (max-width: 720px) {
   .case__hdr { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .case__nav button { height: 32px; min-width: 32px; padding: 0 4px; }
   .case__nav .case__arrow { width: 32px; }
-  .case__d2, .case__d3col { grid-column: 1 / -1; margin-top: 0; }
+  .case__d2, .case__d3col, .case__phones { grid-column: 1 / -1; margin-top: 0; }
   .case__pattern--desk { display: none; }
   .case__pattern--mob { display: block; }
 }

@@ -18,9 +18,10 @@ const spots = (labels = {}, pos = {}) =>
 
 /*
   hero:  { src, video, fit: 'cover'|'contain', bg, aspect (e.g. '3 / 2'; omit for fixed-height hero), parallax }
-  d2:    wide detail image (4:3, left)    { src, fit, bg, caption }
+  d2:    wide detail image (4:3, left)    { src, video, fit, bg, caption }
   d3:    tall detail image (3:4, right)   { src, video, caption, label (gray text above the box) }
   d3b:   optional second 3:4 box beside d3 (d3 + d3b share the right column). Empty src shows a placeholder.
+  phones: replaces d3 with staggered, overlapping iPhones showing screenshots [{ src, alt }] (1170 x 2532 phone captures)
   pattern: optional extra image { src, alt, aspect, caption }: under the headline on desktop, under d2 on mobile
   art:   optional transparent graphic (e.g. SVG logo) under the Approach paragraph { src, alt }
   preview: image in the cursor-follow circle when hovering the row (defaults to hero.src)
@@ -80,16 +81,20 @@ export const projects = [
     spots: spots(),
   },
   {
-    n: '05', title: 'Mountain View Heritage', disc: 'Illustration', year: '2025',
+    n: '05', title: 'Mountain View Heritage', disc: 'Web design', year: '2026',
     headline: 'Whole hog, whole brand.',
     context: (
       <><L href="https://www.mountainviewheritage.com/">Mountain View Heritage</L> is a small, family-run farm in Oregon City, OR focused on nose-to-tail practices and whole-hog butchery. They focus primarily on providing educational workshops around how to raise and process heritage breed pigs. This is an ongoing project for me. We’re working together to create a logo, online presence, and a look that suits the feel of their business.</>
     ),
-    approach: 'Approach: drawing from old butcher-shop charts and farmhouse signage, the logo and visual system aim to feel handmade, educational and unmistakably Oregon.',
-    hero: { src: C + 'tm-case05-hero.jpg', aspect: '2400 / 1447' },
-    d2: { src: C + 'tm-case05-2.webp' },
-    d3: { video: A + 'mountain-view-heritage.mp4', label: 'Logo design captured with Procreate time lapse' },
-    spots: spots({ 3: 'Hand painted original' }),
+    approach: 'Approach: the home page opens on four crossfading clips from the farm kitchen, with the hand-drawn logo I made for them set beside the headline. The class calendar updates daily from PCC’s schedule, and a small shop and event-payment page sell hats, stickers and private events. The site is built in React.',
+    hero: { src: C + 'mvh-web-hero.jpg', aspect: '924 / 540' },
+    d2: { video: A + 'mountain-view-heritage.mp4', fit: 'contain', bg: 'var(--ink)', caption: 'Logo design captured with Procreate time lapse' },
+    phones: [
+      { src: C + 'mvh-phone-1.jpg', alt: 'Events page on an iPhone' },
+      { src: C + 'mvh-phone-2.jpg', alt: 'Private event payment page on an iPhone' },
+      { src: C + 'mvh-phone-3.jpg', alt: 'Home page on an iPhone' },
+    ],
+    spots: spots({ 1: 'Hand-drawn logo', 2: 'Crossfading hero video', 3: 'Complete brand identity' }),
   },
   {
     n: '06', title: 'West Of The Rain', disc: 'Digital', year: '2022',

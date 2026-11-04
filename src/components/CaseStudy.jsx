@@ -2,7 +2,7 @@ function Fill({ src, video, fit = 'cover' }) {
   return (
     <>
       {src && <img src={src} alt="" loading="lazy" style={{ objectFit: fit }} />}
-      {video && <video src={video} autoPlay muted loop playsInline preload="metadata" disablePictureInPicture className="media__video" />}
+      {video && <video src={video} autoPlay muted loop playsInline preload="metadata" disablePictureInPicture className="media__video" style={{ objectFit: fit }} />}
     </>
   );
 }
@@ -125,16 +125,26 @@ export default function CaseStudy({ projects, index, setIndex }) {
         </div>
 
         <div className="media case__d2" data-reveal="clip" data-img="" style={{ background: p.d2.bg || 'transparent' }}>
-          <Fill src={p.d2.src} fit={p.d2.fit} /><Caption text={p.d2.caption} />
+          <Fill src={p.d2.src} video={p.d2.video} fit={p.d2.fit} /><Caption text={p.d2.caption} />
         </div>
         {p.pattern && <Pattern item={p.pattern} where="mob" />}
 
-        {/* label sits outside the clip-revealed box so the reveal can't hide it */}
-        <div className={'case__d3col' + (p.d3b ? ' case__d3col--split' : '')}>
-          {p.d3.label && <div className="case__label">{p.d3.label}</div>}
-          <TallBox item={p.d3} delay="150" />
-          {p.d3b && <TallBox item={p.d3b} delay="220" />}
-        </div>
+        {p.phones ? (
+          <div className="case__phones">
+            {p.phones.map((ph, i) => (
+              <div key={ph.src} className="phone" data-reveal="up" data-delay={150 + i * 120}>
+                <img src={ph.src} alt={ph.alt || ''} loading="lazy" />
+              </div>
+            ))}
+          </div>
+        ) : (
+          /* label sits outside the clip-revealed box so the reveal can't hide it */
+          <div className={'case__d3col' + (p.d3b ? ' case__d3col--split' : '')}>
+            {p.d3.label && <div className="case__label">{p.d3.label}</div>}
+            <TallBox item={p.d3} delay="150" />
+            {p.d3b && <TallBox item={p.d3b} delay="220" />}
+          </div>
+        )}
         </>}
       </div>
     </section>
