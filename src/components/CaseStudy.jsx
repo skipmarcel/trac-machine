@@ -1,8 +1,10 @@
+import { useLayoutEffect, useRef, useState } from 'react';
+
 function Fill({ src, video, fit = 'cover' }) {
   return (
     <>
       {src && <img src={src} alt="" loading="lazy" style={{ objectFit: fit }} />}
-      {video && <video src={video} autoPlay muted loop playsInline preload="metadata" disablePictureInPicture className="media__video" />}
+      {video && <video src={video} autoPlay muted loop playsInline preload="metadata" disablePictureInPicture className="media__video" style={{ objectFit: fit }} />}
     </>
   );
 }
@@ -57,6 +59,25 @@ function TallBox({ item, delay }) {
   );
 }
 
+// A live site shown as a display window: drawn at a fixed desktop size and scaled to fit, so phones see the same
+// layout. pointer-events are off (see .case__site) so it can't trap page scrolling.
+const SITE_W = 1280, SITE_H = 748;
+function SiteFrame({ item, notes }) {
+  const box = useRef(null);
+  const [scale, setScale] = useState(1);
+  useLayoutEffect(() => {
+    const ro = new ResizeObserver(() => setScale(box.current.clientWidth / SITE_W));
+    ro.observe(box.current);
+    return () => ro.disconnect();
+  }, []);
+  return (
+    <div ref={box} className={'media case__site' + (notes ? ' case__hero--notes' : '')} data-reveal="clip" style={{ aspectRatio: `${SITE_W} / ${SITE_H}` }}>
+      <iframe src={item.src} title={item.title} loading="lazy" tabIndex={-1} allow="autoplay"
+        style={{ width: SITE_W, height: SITE_H, transform: `scale(${scale})` }} />
+    </div>
+  );
+}
+
 export default function CaseStudy({ projects, index, setIndex }) {
   const p = projects[index], n = projects.length;
   const heroBox = p.hero.aspect ? { aspectRatio: p.hero.aspect } : { height: 'clamp(320px,62vw,820px)' };
@@ -82,12 +103,14 @@ export default function CaseStudy({ projects, index, setIndex }) {
             {p.intro.text && <p>{p.intro.text}</p>}
           </div>
         )}
-        <div className={'media case__hero' + (p.spots.length ? ' case__hero--notes' : '')} data-reveal="clip" data-img="" data-demo="" style={heroBox}>
-          <div data-parallax={p.hero.parallax ? '0.08' : '0'}
-            style={{ position: 'absolute', inset: p.hero.parallax ? '-8% 0' : '0', background: p.hero.bg || 'transparent' }}>
-            <Fill src={p.hero.src} video={p.hero.video} fit={p.hero.fit} />
+        {p.hero.site ? <SiteFrame item={p.hero.site} notes={p.spots.length > 0} /> : (
+          <div className={'media case__hero' + (p.spots.length ? ' case__hero--notes' : '')} data-reveal="clip" data-img="" data-demo="" style={heroBox}>
+            <div data-parallax={p.hero.parallax ? '0.08' : '0'}
+              style={{ position: 'absolute', inset: p.hero.parallax ? '-8% 0' : '0', background: p.hero.bg || 'transparent' }}>
+              <Fill src={p.hero.src} video={p.hero.video} fit={p.hero.fit} />
+            </div>
           </div>
-        </div>
+        )}
 
         {p.embed && p.embed.heading && (
           <div className="case__intro case__intro--embed" data-reveal="up">
@@ -112,6 +135,12 @@ export default function CaseStudy({ projects, index, setIndex }) {
           </div>
         )}
 
+        {p.feature && (
+          <div className="media case__feature" data-reveal="clip" data-img="" style={{ aspectRatio: p.feature.aspect }}>
+            <img src={p.feature.src} alt={p.feature.alt || ''} loading="lazy" />
+          </div>
+        )}
+
         <div className="case__text">
           <div className="case__lead">
             <h3 className="h3" data-head="">{p.headline}</h3>
@@ -125,16 +154,26 @@ export default function CaseStudy({ projects, index, setIndex }) {
         </div>
 
         <div className="media case__d2" data-reveal="clip" data-img="" style={{ background: p.d2.bg || 'transparent' }}>
-          <Fill src={p.d2.src} fit={p.d2.fit} /><Caption text={p.d2.caption} />
+          <Fill src={p.d2.src} video={p.d2.video} fit={p.d2.fit} /><Caption text={p.d2.caption} />
         </div>
         {p.pattern && <Pattern item={p.pattern} where="mob" />}
 
-        {/* label sits outside the clip-revealed box so the reveal can't hide it */}
-        <div className={'case__d3col' + (p.d3b ? ' case__d3col--split' : '')}>
-          {p.d3.label && <div className="case__label">{p.d3.label}</div>}
-          <TallBox item={p.d3} delay="150" />
-          {p.d3b && <TallBox item={p.d3b} delay="220" />}
-        </div>
+        {p.phones ? (
+          <div className="case__phones">
+            {p.phones.map((ph, i) => (
+              <div key={ph.src} className="phone" data-reveal="up" data-delay={150 + i * 120}>
+                <img src={ph.src} alt={ph.alt || ''} loading="lazy" />
+              </div>
+            ))}
+          </div>
+        ) : (
+          /* label sits outside the clip-revealed box so the reveal can't hide it */
+          <div className={'case__d3col' + (p.d3b ? ' case__d3col--split' : '')}>
+            {p.d3.label && <div className="case__label">{p.d3.label}</div>}
+            <TallBox item={p.d3} delay="150" />
+            {p.d3b && <TallBox item={p.d3b} delay="220" />}
+          </div>
+        )}
         </>}
       </div>
     </section>
