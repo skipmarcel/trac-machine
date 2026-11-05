@@ -147,17 +147,17 @@ export const projects = [
 // heading + paragraph above the frame (files live in public/assets/embeds/).
 export const featured = [
   {
-    n: 'CR', title: 'For CleaResult (Motion Graphics and video work example)',
-    label: 'For CleaResult',   // shorter text for the Selected work row (title is still used in the gallery header)
-    brand: 'CleaResult',   // shown bold in the Selected work row
+    n: 'CR', title: 'For CLEAResult (Motion Graphics and video work example)',
+    label: 'For CLEAResult',   // shorter text for the Selected work row (title is still used in the gallery header)
+    brand: 'CLEAResult',   // shown bold in the Selected work row
     heroOnly: true,
     hero: { video: A + 'cr-data-story_1.mp4', aspect: '16 / 9' },
     embed: {
       src: A + 'embeds/clearesult-design-system-tyler-adams.html', title: 'CLEAResult design system click-through deck',
-      heading: 'CleaResult Design Template Approach',
+      heading: 'CLEAResult Design Template Approach',
       text: 'Building a reusable template and brand design system lets non-designers create digital and print media quickly while keeping company colors, layouts, and typography locked and consistent.',
     },
-    intro: { heading: 'Motion Graphics and video work using the CleaResult logo and public data', text: 'Tech used: Adobe Media Encoder, Adobe Ilustrator, Adobe Photoshop, Claude Design and Claude Code.' },
+    intro: { heading: 'Motion Graphics and video work using the CLEAResult logo and public data', text: 'Tech used: Adobe Media Encoder, Adobe Ilustrator, Adobe Photoshop, Claude Design and Claude Code.' },
     spots: [],
   },
 ];
