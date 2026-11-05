@@ -30,18 +30,24 @@ const spots = (labels = {}, pos = {}) =>
 */
 export const projects = [
   {
-    n: '01', title: 'Seaworthy Jewelry', disc: 'Branding', year: '2026',
-    headline: <>Seaworthy<br />brand identity reboot</>,   // explicit line break, one phrase per line
+    n: '01', title: 'Mountain View Heritage', disc: 'Web design', year: '2026',
+    headline: 'Whole hog, whole brand.',
     context: (
-      <><L href="https://www.seaworthypdx.com/">Seaworthy</L> started in January of 2010 as a side project. An opportunity to escape a corporate job that had their designer, Marisa Howard, drowning in boredom. Seaworthy has grown from a hobby to a full-blown jewelry production facility, employing skilled artisans and honoring a history of US manufactured jewelry.</>
+      <><L href="https://www.mountainviewheritage.com/">Mountain View Heritage</L> is a small, family-run farm in Oregon City, OR focused on nose-to-tail practices and whole-hog butchery. They focus primarily on providing educational workshops around how to raise and process heritage breed pigs. This is an ongoing project for me. We’re working together to create a logo, online presence, and a look that suits the feel of their business.</>
     ),
-    approach: 'Approach: a redesign of the Seaworthy logo, refining the mark while keeping its maritime heritage, then carrying the new identity through type and colour decisions from a business card to a website.',
-    hero: { src: C + 'd1-case-hero.png', aspect: '3 / 2' },
-    d2: { src: C + 'd1-case-2.webp' },
-    d3: { src: C + 'd1-case-3.webp' },
-    pattern: { src: C + 'tm-case01-invite.jpg', alt: 'Seaworthy open studio party invitation', aspect: '4 / 3' },
-    art: { src: C + 'tm-case01-fish.svg', alt: 'Seaworthy fish logo' },
-    spots: spots({ 1: 'Font creation', 2: 'Logo design' }, { 2: { x: '17.5%', y: '79%' } }),
+    approach: 'Approach: the home page opens on four crossfading clips from the farm kitchen, with the hand-drawn logo I made for them set beside the headline. The class calendar updates daily from PCC’s schedule, and a small shop and event-payment page sell hats, stickers and private events. The site is built in React.',
+    hero: {
+      src: C + 'mvh-kitchen-crew.jpg',   // shown in the cursor-follow preview; the case itself opens on the live site
+      site: { src: 'https://www.mountainviewheritage.com/', title: 'Mountain View Heritage home page' },
+    },
+    feature: { src: C + 'mvh-kitchen-crew.jpg', alt: 'The Mountain View Heritage crew in leather aprons behind a charcuterie board, with the hand-drawn logo', aspect: '924 / 578' },
+    d2: { video: A + 'mountain-view-heritage.mp4', fit: 'contain', bg: 'var(--ink)', caption: 'Logo design captured with Procreate time lapse' },
+    phones: [
+      { src: C + 'mvh-phone-1.jpg', alt: 'Events page on an iPhone' },
+      { src: C + 'mvh-phone-2.jpg', alt: 'Private event payment page on an iPhone' },
+      { src: C + 'mvh-phone-3.jpg', alt: 'Home page on an iPhone' },
+    ],
+    spots: spots({ 1: 'Hand-drawn logo', 2: 'Crossfading hero video', 3: 'Complete brand identity' }),
   },
   {
     n: '02', title: 'Toro Bravo Cookbook', disc: 'Print', year: '2013',
@@ -83,24 +89,18 @@ export const projects = [
     spots: spots(),
   },
   {
-    n: '05', title: 'Mountain View Heritage', disc: 'Web design', year: '2026',
-    headline: 'Whole hog, whole brand.',
+    n: '05', title: 'Seaworthy Jewelry', disc: 'Branding', year: '2026',
+    headline: <>Seaworthy<br />brand identity reboot</>,   // explicit line break, one phrase per line
     context: (
-      <><L href="https://www.mountainviewheritage.com/">Mountain View Heritage</L> is a small, family-run farm in Oregon City, OR focused on nose-to-tail practices and whole-hog butchery. They focus primarily on providing educational workshops around how to raise and process heritage breed pigs. This is an ongoing project for me. We’re working together to create a logo, online presence, and a look that suits the feel of their business.</>
+      <><L href="https://www.seaworthypdx.com/">Seaworthy</L> started in January of 2010 as a side project. An opportunity to escape a corporate job that had their designer, Marisa Howard, drowning in boredom. Seaworthy has grown from a hobby to a full-blown jewelry production facility, employing skilled artisans and honoring a history of US manufactured jewelry.</>
     ),
-    approach: 'Approach: the home page opens on four crossfading clips from the farm kitchen, with the hand-drawn logo I made for them set beside the headline. The class calendar updates daily from PCC’s schedule, and a small shop and event-payment page sell hats, stickers and private events. The site is built in React.',
-    hero: {
-      src: C + 'mvh-kitchen-crew.jpg',   // shown in the cursor-follow preview; the case itself opens on the live site
-      site: { src: 'https://www.mountainviewheritage.com/', title: 'Mountain View Heritage home page' },
-    },
-    feature: { src: C + 'mvh-kitchen-crew.jpg', alt: 'The Mountain View Heritage crew in leather aprons behind a charcuterie board, with the hand-drawn logo', aspect: '924 / 578' },
-    d2: { video: A + 'mountain-view-heritage.mp4', fit: 'contain', bg: 'var(--ink)', caption: 'Logo design captured with Procreate time lapse' },
-    phones: [
-      { src: C + 'mvh-phone-1.jpg', alt: 'Events page on an iPhone' },
-      { src: C + 'mvh-phone-2.jpg', alt: 'Private event payment page on an iPhone' },
-      { src: C + 'mvh-phone-3.jpg', alt: 'Home page on an iPhone' },
-    ],
-    spots: spots({ 1: 'Hand-drawn logo', 2: 'Crossfading hero video', 3: 'Complete brand identity' }),
+    approach: 'Approach: a redesign of the Seaworthy logo, refining the mark while keeping its maritime heritage, then carrying the new identity through type and colour decisions from a business card to a website.',
+    hero: { src: C + 'd1-case-hero.png', aspect: '3 / 2' },
+    d2: { src: C + 'd1-case-2.webp' },
+    d3: { src: C + 'd1-case-3.webp' },
+    pattern: { src: C + 'tm-case01-invite.jpg', alt: 'Seaworthy open studio party invitation', aspect: '4 / 3' },
+    art: { src: C + 'tm-case01-fish.svg', alt: 'Seaworthy fish logo' },
+    spots: spots({ 1: 'Font creation', 2: 'Logo design' }, { 2: { x: '17.5%', y: '79%' } }),
   },
   {
     n: '06', title: 'West Of The Rain', disc: 'Digital', year: '2022',

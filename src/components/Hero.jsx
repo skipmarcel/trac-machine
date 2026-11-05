@@ -133,12 +133,8 @@ export default function Hero({ isMobile }) {
       <div className="intro">
         <div className="intro__lead">
           <p className="intro__lede" data-reveal="up" data-delay="700">Graphic, Web, &amp; Print design by Tyler Russell Adams</p>
-          <div className="disciplines" data-reveal="up" data-delay="900">
-            <span>Disciplines</span><span>Branding · Typography</span><span>Print · Packaging</span><span>Illustration · Web</span>
-          </div>
         </div>
         <div className="intro__col" data-reveal="up" data-delay="800">
-          <p className="intro__body">An independent, one-person studio working across branding, typography, print, illustration and the web. Each project starts as a concept and is built out by hand.</p>
           <div className="btn-row">
             <a href="#work" className="btn btn--primary" data-btn="1">View work <span data-ico="">→</span></a>
             <a href={RESUME} target="_blank" rel="noopener noreferrer" className="btn btn--secondary" data-btn="2">Resume</a>
