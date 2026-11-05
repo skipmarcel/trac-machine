@@ -113,7 +113,7 @@ img, video { display: block; max-width: 100%; }
   font-weight: 550; font-stretch: 88%; line-height: .8; letter-spacing: -.055em;
   font-size: calc(clamp(88px, 21.5vw, 420px) * var(--hero-scale));
 }
-@media (max-width: 720px) { .hero__title { font-size: calc(17.5vw * var(--hero-scale)); } }
+@media (max-width: 720px) { .hero__title { font-size: calc(22.5vw * var(--hero-scale)); } }
 .hero__line { overflow: hidden; display: flex; padding-bottom: .04em; }
 .hero__line--2 { padding-bottom: .06em; margin-top: -.112em; }
 .hero__line span { display: inline-block; }
@@ -124,9 +124,6 @@ img, video { display: block; max-width: 100%; }
 .intro__lede { margin: 0; font-size: clamp(24px, 2.4vw, 36px); line-height: 1.15; letter-spacing: -.02em; font-weight: 450; text-wrap: pretty; max-width: 22ch; }
 .intro__lead { display: flex; flex-direction: column; gap: var(--gap2); align-items: flex-start; }
 .intro__col { display: flex; flex-direction: column; gap: var(--gap2); align-items: flex-start; }
-.intro__body { margin: 0; line-height: 1.5; color: var(--body); max-width: 40ch; text-wrap: pretty; }
-.disciplines { display: flex; flex-direction: column; gap: 6px; font-family: var(--mono); font-size: 14px; }
-.disciplines span:first-child { color: var(--muted); }
 
 /* ---------- Buttons ---------- */
 .btn-row { display: flex; gap: 12px; flex-wrap: wrap; align-items: center; }
@@ -194,13 +191,13 @@ img, video { display: block; max-width: 100%; }
 .case__copy { display: flex; flex-direction: column; gap: 20px; line-height: 1.55; color: var(--body); }
 .case__copy p { margin: 0; text-wrap: pretty; }
 .case__art { width: min(100%, 380px); height: auto; align-self: center; margin-top: calc(-1 * var(--gap1)); margin-bottom: calc(-1 * var(--gap3)); }   /* transparent graphic under the Approach text, centred under it; cancels .case__text's bottom padding */
-/* per-case fine-tuning: .case--01 = Seaworthy, .case--02 = Toro Bravo, etc. (class set in CaseStudy.jsx from the project number) */
-.case--01 .case__d3col { margin-top: 0; }   /* the fish logo already fills the right column, so drop the d3 stagger */
+/* per-case fine-tuning: .case--05 = Seaworthy, .case--02 = Toro Bravo, etc. (class set in CaseStudy.jsx from the project number) */
+.case--05 .case__d3col { margin-top: 0; }   /* the fish logo already fills the right column, so drop the d3 stagger */
 @media (min-width: 721px) {
-  .case--01 .case__d2 { margin-top: -87px; }                    /* green invite: more negative = higher */
-  .case--01 .case__pattern--desk { margin-top: 24px; }          /* mint invite: bigger = lower */
+  .case--05 .case__d2 { margin-top: -87px; }                    /* green invite: more negative = higher */
+  .case--05 .case__pattern--desk { margin-top: 24px; }          /* mint invite: bigger = lower */
 }
-.case--01 .h3, .case--02 .h3 { max-width: none; }   /* Seaworthy + Toro headline breaks are set by hand in projects.jsx */
+.case--05 .h3, .case--02 .h3 { max-width: none; }   /* Seaworthy + Toro headline breaks are set by hand in projects.jsx */
 .case--02 .case__art { width: min(100%, 320px); margin-top: var(--gap3); margin-bottom: 0; opacity: .75; }   /* Toro logo: size, space above/below (PNG has no built-in margin), transparency */
 /* desktop: bigger logo that hangs down behind the cover so the cover's top-right corner overlaps the circle.
    margin-bottom pulls the rows below up over it (more negative = more overlap) */
@@ -247,7 +244,7 @@ img, video { display: block; max-width: 100%; }
 .phone::after { content: ''; position: absolute; top: 15cqw; right: -.55cqw; width: .55cqw; height: 9cqw; border-radius: 0 .4cqw .4cqw 0; background: var(--muted); }   /* side button */
 @media (min-width: 721px) {
   /* Mountain View Heritage: time lapse stacked above the phones, like mobile, in a centred column */
-  .case--05 .case__d2, .case--05 .case__phones { grid-column: 2 / span 4; }
+  .case--01 .case__d2, .case--01 .case__phones { grid-column: 2 / span 4; }
 }
 .case__label { font-family: var(--mono); font-size: 13px; line-height: 1.35; color: var(--muted); }
 .media--empty { background: var(--surf); display: grid; place-items: center; font-family: var(--mono); font-size: 12px; color: var(--muted); text-align: center; padding: 12px; }
