@@ -62,7 +62,7 @@ function TallBox({ item, delay }) {
 // A live site shown as a display window: drawn at a fixed desktop size and scaled to fit, so phones see the same
 // layout. pointer-events are off (see .case__site) so it can't trap page scrolling.
 const SITE_W = 1280, SITE_H = 748;
-function SiteFrame({ item }) {
+function SiteFrame({ item, notes }) {
   const box = useRef(null);
   const [scale, setScale] = useState(1);
   useLayoutEffect(() => {
@@ -71,7 +71,7 @@ function SiteFrame({ item }) {
     return () => ro.disconnect();
   }, []);
   return (
-    <div ref={box} className="media case__site" data-reveal="clip" style={{ aspectRatio: `${SITE_W} / ${SITE_H}` }}>
+    <div ref={box} className={'media case__site' + (notes ? ' case__hero--notes' : '')} data-reveal="clip" style={{ aspectRatio: `${SITE_W} / ${SITE_H}` }}>
       <iframe src={item.src} title={item.title} loading="lazy" tabIndex={-1} allow="autoplay"
         style={{ width: SITE_W, height: SITE_H, transform: `scale(${scale})` }} />
     </div>
@@ -103,12 +103,14 @@ export default function CaseStudy({ projects, index, setIndex }) {
             {p.intro.text && <p>{p.intro.text}</p>}
           </div>
         )}
-        <div className={'media case__hero' + (p.spots.length ? ' case__hero--notes' : '')} data-reveal="clip" data-img="" data-demo="" style={heroBox}>
-          <div data-parallax={p.hero.parallax ? '0.08' : '0'}
-            style={{ position: 'absolute', inset: p.hero.parallax ? '-8% 0' : '0', background: p.hero.bg || 'transparent' }}>
-            <Fill src={p.hero.src} video={p.hero.video} fit={p.hero.fit} />
+        {p.hero.site ? <SiteFrame item={p.hero.site} notes={p.spots.length > 0} /> : (
+          <div className={'media case__hero' + (p.spots.length ? ' case__hero--notes' : '')} data-reveal="clip" data-img="" data-demo="" style={heroBox}>
+            <div data-parallax={p.hero.parallax ? '0.08' : '0'}
+              style={{ position: 'absolute', inset: p.hero.parallax ? '-8% 0' : '0', background: p.hero.bg || 'transparent' }}>
+              <Fill src={p.hero.src} video={p.hero.video} fit={p.hero.fit} />
+            </div>
           </div>
-        </div>
+        )}
 
         {p.embed && p.embed.heading && (
           <div className="case__intro case__intro--embed" data-reveal="up">
@@ -133,7 +135,11 @@ export default function CaseStudy({ projects, index, setIndex }) {
           </div>
         )}
 
-        {p.site && <SiteFrame item={p.site} />}
+        {p.feature && (
+          <div className="media case__feature" data-reveal="clip" data-img="" style={{ aspectRatio: p.feature.aspect }}>
+            <img src={p.feature.src} alt={p.feature.alt || ''} loading="lazy" />
+          </div>
+        )}
 
         <div className="case__text">
           <div className="case__lead">

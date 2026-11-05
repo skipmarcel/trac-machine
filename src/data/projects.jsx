@@ -21,7 +21,8 @@ const spots = (labels = {}, pos = {}) =>
   d2:    wide detail image (4:3, left)    { src, video, fit, bg, caption }
   d3:    tall detail image (3:4, right)   { src, video, caption, label (gray text above the box) }
   d3b:   optional second 3:4 box beside d3 (d3 + d3b share the right column). Empty src shows a placeholder.
-  site:  optional live website shown under the hero and notes as a non-interactive window { src, title }
+  hero.site: live website as the hero, a non-interactive window { src, title }. Keep hero.src for the row preview.
+  feature: optional full-width image between the notes and the text { src, alt, aspect }
   phones: replaces d3 with staggered, overlapping iPhones showing screenshots [{ src, alt }] (1170 x 2532 phone captures)
   pattern: optional extra image { src, alt, aspect, caption }: under the headline on desktop, under d2 on mobile
   art:   optional transparent graphic (e.g. SVG logo) under the Approach paragraph { src, alt }
@@ -88,8 +89,11 @@ export const projects = [
       <><L href="https://www.mountainviewheritage.com/">Mountain View Heritage</L> is a small, family-run farm in Oregon City, OR focused on nose-to-tail practices and whole-hog butchery. They focus primarily on providing educational workshops around how to raise and process heritage breed pigs. This is an ongoing project for me. We’re working together to create a logo, online presence, and a look that suits the feel of their business.</>
     ),
     approach: 'Approach: the home page opens on four crossfading clips from the farm kitchen, with the hand-drawn logo I made for them set beside the headline. The class calendar updates daily from PCC’s schedule, and a small shop and event-payment page sell hats, stickers and private events. The site is built in React.',
-    hero: { src: C + 'mvh-web-hero.jpg', aspect: '924 / 540' },
-    site: { src: 'https://www.mountainviewheritage.com/', title: 'Mountain View Heritage home page' },
+    hero: {
+      src: C + 'mvh-kitchen-crew.jpg',   // shown in the cursor-follow preview; the case itself opens on the live site
+      site: { src: 'https://www.mountainviewheritage.com/', title: 'Mountain View Heritage home page' },
+    },
+    feature: { src: C + 'mvh-kitchen-crew.jpg', alt: 'The Mountain View Heritage crew in leather aprons behind a charcuterie board, with the hand-drawn logo', aspect: '924 / 578' },
     d2: { video: A + 'mountain-view-heritage.mp4', fit: 'contain', bg: 'var(--ink)', caption: 'Logo design captured with Procreate time lapse' },
     phones: [
       { src: C + 'mvh-phone-1.jpg', alt: 'Events page on an iPhone' },

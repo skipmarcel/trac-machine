@@ -231,8 +231,9 @@ img, video { display: block; max-width: 100%; }
 .case__embed { grid-column: 1 / -1; margin-top: var(--gap3); container-type: inline-size; border-radius: var(--rad); overflow: hidden; background: #111; }
 .case__embed iframe { display: block; width: 100%; border: 0; height: calc((100cqw - 188px) * 9 / 16 + 164px); }
 @container (max-width: 640px) { .case__embed iframe { height: calc(100cqw * 9 / 16 + 164px); } }
-/* live site window under the hero (SiteFrame in CaseStudy.jsx) */
-.case__site { grid-column: 1 / -1; background: var(--ink); }
+/* live site window as the hero (SiteFrame in CaseStudy.jsx), and the full-width image that can follow the notes */
+.case__site, .case__feature { grid-column: 1 / -1; }
+.case__site { background: var(--ink); }
 .case__site iframe { position: absolute; top: 0; left: 0; border: 0; transform-origin: 0 0; pointer-events: none; }
 /* staggered iPhones instead of the tall box(es). All sizes are in cqw so the phones scale with the column.
    Width + overlap: 3 x 36 - 2 x 4 = 100. Stagger: margin-top on .phone:nth-child. */
