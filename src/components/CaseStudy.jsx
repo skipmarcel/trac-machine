@@ -78,22 +78,26 @@ function SiteFrame({ item, notes }) {
   );
 }
 
-export default function CaseStudy({ projects, index, setIndex }) {
+export default function CaseStudy({ projects, index, setIndex, onOpen }) {
   const p = projects[index], n = projects.length;
   const heroBox = p.hero.aspect ? { aspectRatio: p.hero.aspect } : { height: 'clamp(320px,62vw,820px)' };
+  // Case picker: shown above and below each case. The lower one also scrolls back up to the start of the case.
+  const nav = (go, modifier = '') => (
+    <div className={'case__nav' + modifier}>
+      <button className="case__arrow" aria-label="Previous case" onClick={() => go((index + n - 1) % n)}>←</button>
+      {projects.map((k, i) => (
+        <button key={k.n} aria-label={k.title} className={(i === index ? 'is-active' : '') + (k.heroOnly ? ' is-featured' : '')} onClick={() => go(i)}>{k.n}</button>
+      ))}
+      <button className="case__arrow" aria-label="Next case" onClick={() => go((index + 1) % n)}>→</button>
+    </div>
+  );
 
   return (
     <section id="case" className="section" data-sec="">
       <div className="case__hdr">
         <span data-scramble="">{p.heroOnly ? 'Featured' : 'Case ' + p.n}</span><span className="case__title">{p.title}</span>{p.disc && <span className="accent">{p.disc}</span>}
       </div>
-      <div className="case__nav">
-        <button className="case__arrow" aria-label="Previous case" onClick={() => setIndex((index + n - 1) % n)}>←</button>
-        {projects.map((k, i) => (
-          <button key={k.n} aria-label={k.title} className={(i === index ? 'is-active' : '') + (k.heroOnly ? ' is-featured' : '')} onClick={() => setIndex(i)}>{k.n}</button>
-        ))}
-        <button className="case__arrow" aria-label="Next case" onClick={() => setIndex((index + 1) % n)}>→</button>
-      </div>
+      {nav(setIndex)}
 
       {/* key remounts the case so reveal animations replay on every switch */}
       {p.custom ? (
@@ -180,6 +184,8 @@ export default function CaseStudy({ projects, index, setIndex }) {
         </>}
       </div>
       )}
+
+      {nav(onOpen, ' case__nav--bottom')}
     </section>
   );
 }

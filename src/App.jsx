@@ -91,7 +91,7 @@ export default function App() {
       <Header isMobile={isMobile} menuOpen={menuOpen} setMenuOpen={setMenuOpen} overHero={overHero} />
       <Hero isMobile={isMobile} />
       <Work featured={featured} projects={projects} onOpen={openCase} />
-      <CaseStudy projects={cases} index={caseIdx} setIndex={setCaseIdx} />
+      <CaseStudy projects={cases} index={caseIdx} setIndex={setCaseIdx} onOpen={openCase} />
       <About />
       <Contact />
     </div>
