@@ -191,26 +191,26 @@ img, video { display: block; max-width: 100%; }
 .case__copy { display: flex; flex-direction: column; gap: 20px; line-height: 1.55; color: var(--body); }
 .case__copy p { margin: 0; text-wrap: pretty; }
 .case__art { width: min(100%, 380px); height: auto; align-self: center; margin-top: calc(-1 * var(--gap1)); margin-bottom: calc(-1 * var(--gap3)); }   /* transparent graphic under the Approach text, centred under it; cancels .case__text's bottom padding */
-/* per-case fine-tuning: .case--05 = Seaworthy, .case--02 = Toro Bravo, etc. (class set in CaseStudy.jsx from the project number) */
-.case--05 .case__d3col { margin-top: 0; }   /* the fish logo already fills the right column, so drop the d3 stagger */
+/* per-case fine-tuning: .case--06 = Seaworthy, .case--03 = Toro Bravo, etc. (class set in CaseStudy.jsx from the project number) */
+.case--06 .case__d3col { margin-top: 0; }   /* the fish logo already fills the right column, so drop the d3 stagger */
 @media (min-width: 721px) {
-  .case--05 .case__d2 { margin-top: -87px; }                    /* green invite: more negative = higher */
-  .case--05 .case__pattern--desk { margin-top: 24px; }          /* mint invite: bigger = lower */
+  .case--06 .case__d2 { margin-top: -87px; }                    /* green invite: more negative = higher */
+  .case--06 .case__pattern--desk { margin-top: 24px; }          /* mint invite: bigger = lower */
 }
-.case--05 .h3, .case--02 .h3 { max-width: none; }   /* Seaworthy + Toro headline breaks are set by hand in projects.jsx */
-.case--02 .case__art { width: min(100%, 320px); margin-top: var(--gap3); margin-bottom: 0; opacity: .75; }   /* Toro logo: size, space above/below (PNG has no built-in margin), transparency */
+.case--06 .h3, .case--03 .h3 { max-width: none; }   /* Seaworthy + Toro headline breaks are set by hand in projects.jsx */
+.case--03 .case__art { width: min(100%, 320px); margin-top: var(--gap3); margin-bottom: 0; opacity: .75; }   /* Toro logo: size, space above/below (PNG has no built-in margin), transparency */
 /* desktop: bigger logo that hangs down behind the cover so the cover's top-right corner overlaps the circle.
    margin-bottom pulls the rows below up over it (more negative = more overlap) */
 @media (min-width: 721px) {
   /* --toro-drop: logo + cover down together (bigger = lower)
      --toro-logo-y: logo only (negative = up)
      --toro-overlap: cover only, how far it rides up over the logo (bigger = more overlap) */
-  .case--02 { --toro-drop: 114px; --toro-logo-y: -144px; --toro-overlap: 110px; }
-  .case--02 .case__art { width: min(100%, 520px); margin-top: calc(var(--gap3) + var(--toro-drop) + var(--toro-logo-y)); margin-bottom: calc(-284px - var(--toro-logo-y)); }
+  .case--03 { --toro-drop: 114px; --toro-logo-y: -144px; --toro-overlap: 110px; }
+  .case--03 .case__art { width: min(100%, 520px); margin-top: calc(var(--gap3) + var(--toro-drop) + var(--toro-logo-y)); margin-bottom: calc(-284px - var(--toro-logo-y)); }
   /* centre the logo between the pattern image's right edge (max 440px wide) and the page's right edge.
      100% = width of the text column; 12px = the column gap in .case__text */
-  .case--02 .case__art { position: relative; z-index: 2; left: calc((min(100%, 440px) - 12px - 100%) / 2); }   /* z-index: logo sits in front of the cover */
-  .case--02 .case__d2 { margin-top: calc(var(--toro-drop) - var(--toro-overlap)); }
+  .case--03 .case__art { position: relative; z-index: 2; left: calc((min(100%, 440px) - 12px - 100%) / 2); }   /* z-index: logo sits in front of the cover */
+  .case--03 .case__d2 { margin-top: calc(var(--toro-drop) - var(--toro-overlap)); }
 }
 .case__d2 { grid-column: span 4; aspect-ratio: 4 / 3; }
 .case__d3col { grid-column: span 2; margin-top: clamp(40px, 14vw, 220px); min-width: 0; display: flex; flex-direction: column; gap: 10px; align-self: start; }
@@ -229,6 +229,7 @@ img, video { display: block; max-width: 100%; }
 .case__embed iframe { display: block; width: 100%; border: 0; height: calc((100cqw - 188px) * 9 / 16 + 164px); }
 @container (max-width: 640px) { .case__embed iframe { height: calc(100cqw * 9 / 16 + 164px); } }
 /* live site window as the hero (SiteFrame in CaseStudy.jsx), and the full-width image that can follow the notes */
+.case__custom { width: 100%; }
 .case__site, .case__feature { grid-column: 1 / -1; }
 .case__site { background: var(--ink); }
 .case__site iframe { position: absolute; top: 0; left: 0; border: 0; transform-origin: 0 0; pointer-events: none; }
@@ -244,7 +245,7 @@ img, video { display: block; max-width: 100%; }
 .phone::after { content: ''; position: absolute; top: 15cqw; right: -.55cqw; width: .55cqw; height: 9cqw; border-radius: 0 .4cqw .4cqw 0; background: var(--muted); }   /* side button */
 @media (min-width: 721px) {
   /* Mountain View Heritage: time lapse stacked above the phones, like mobile, in a centred column */
-  .case--01 .case__d2, .case--01 .case__phones { grid-column: 2 / span 4; }
+  .case--02 .case__d2, .case--02 .case__phones { grid-column: 2 / span 4; }
 }
 .case__label { font-family: var(--mono); font-size: 13px; line-height: 1.35; color: var(--muted); }
 .media--empty { background: var(--surf); display: grid; place-items: center; font-family: var(--mono); font-size: 12px; color: var(--muted); text-align: center; padding: 12px; }

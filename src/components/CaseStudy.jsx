@@ -96,6 +96,9 @@ export default function CaseStudy({ projects, index, setIndex }) {
       </div>
 
       {/* key remounts the case so reveal animations replay on every switch */}
+      {p.custom ? (
+        <div key={p.n} className="case__custom" data-reveal="up"><p.custom /></div>
+      ) : (
       <div key={p.n} className={'case__grid case--' + p.n}>
         {p.intro && (
           <div className="case__intro" data-reveal="up">
@@ -176,6 +179,7 @@ export default function CaseStudy({ projects, index, setIndex }) {
         )}
         </>}
       </div>
+      )}
     </section>
   );
 }
