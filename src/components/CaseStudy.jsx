@@ -124,7 +124,7 @@ export default function CaseStudy({ projects, index, setIndex }) {
           </div>
         )}
 
-        {/* heroOnly cases (e.g. the CleaResult reel) stop here: no notes, text or detail images */}
+        {/* heroOnly cases (e.g. the CLEAResult reel) stop here: no notes, text or detail images */}
         {!p.heroOnly && <>
         {/* design notes bar attached under the hero (was numbered hotspots over the image) */}
         {p.spots.length > 0 && (
