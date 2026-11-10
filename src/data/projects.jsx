@@ -1,6 +1,7 @@
 // All portfolio content lives here. Each entry drives one row in "Selected work"
 // and one case study. Images/videos live in /public/assets.
 import FKCaseStudy from '../components/FKCaseStudy.jsx';
+import PTCaseStudy from '../components/PTCaseStudy.jsx';
 
 const A = '/assets/';
 const C = '/assets/case/';
@@ -58,7 +59,13 @@ export const projects = [
     spots: spots({ 1: 'Hand-drawn logo', 2: 'Crossfading hero video', 3: 'Complete brand identity' }),
   },
   {
-    n: '03', title: 'Toro Bravo Cookbook', disc: 'Print', year: '2013',
+    n: '03', title: 'Psychic Tiger', disc: 'Web design', year: '2026',
+    hero: { src: '/assets/pt/jordan-117.jpg' },
+    spots: [],
+    custom: PTCaseStudy,
+  },
+  {
+    n: '04', title: 'Toro Bravo Cookbook', disc: 'Print', year: '2013',
     headline: <>TORO BRAVO:<br />STORIES. RECIPES.<br />NO BULL.</>,   // explicit line breaks, one phrase per line
     context: (
       <>I met John Gorham around 2006, a year before he opened Toro Bravo in Portland, Oregon. He became a regular tattoo client and friend, and the bull I tattooed on his left arm became the restaurant's logo and personality for 13 years, until Covid closed it in 2020. I introduced John to my then partner, food writer Liz Crain, and together they wrote the <L href="https://store.mcsweeneys.net/products/toro-bravo-stories-recipes-no-bull?taxon_id=59">Toro Bravo Cookbook</L>, published by <L href="https://store.mcsweeneys.net/">McSweeney's</L> in 2013. I designed the book's look and feel, including the original logo, the outside and inside covers, and aspects of the page design. Between recipe testing at John's house and tattooing everyone involved, it felt more like a big party than a job.</>
@@ -73,7 +80,7 @@ export const projects = [
     spots: spots({ 1: 'Toro Bravo logo design', 2: 'Color and layout design', 3: 'Illustration throughout the book' }),
   },
   {
-    n: '04', title: 'Joyful Noise Table Wine', disc: 'Packaging', year: '2025',
+    n: '05', title: 'Joyful Noise Table Wine', disc: 'Packaging', year: '2025',
     headline: 'From skin to table wine.',
     context: (
       <><L href="https://www.joyfulnoisewine.com/">Joyful Noise Wine</L> is the creation of Calli and Deven Morganstern. Born in McMinnville, Oregon the wines are meant to be shared and bring a small piece of this amazing place to the tables of friends and family all over the world. They were looking for an old world tattoo design. Deven, who is a tattoo client of mine, asked me to design the label for their newest table wine coming out in the fall of 2025.</>
@@ -85,7 +92,7 @@ export const projects = [
     spots: spots({ 2: 'Hand painted original' }),
   },
   {
-    n: '05', title: 'The Athletic Community', disc: 'Apparel', year: '2025',
+    n: '06', title: 'The Athletic Community', disc: 'Apparel', year: '2025',
     headline: 'The best athletic socks in the game should have the best design in the game.',
     context: (
       <>A very regular tattoo client of mine is the owner of an apparel company here in Portland Oregon called <L href="https://www.theathleticcommunity.com/">The Athletic</L>. I had the pleasure of designing a tattoo inspired line of socks for them in 2025. This was a very fun project and I’d love to work with them again.</>
@@ -97,7 +104,7 @@ export const projects = [
     spots: spots(),
   },
   {
-    n: '06', title: 'Seaworthy Jewelry', disc: 'Branding', year: '2026',
+    n: '07', title: 'Seaworthy Jewelry', disc: 'Branding', year: '2026',
     headline: <>Seaworthy<br />brand identity reboot</>,   // explicit line break, one phrase per line
     context: (
       <><L href="https://www.seaworthypdx.com/">Seaworthy</L> started in January of 2010 as a side project. An opportunity to escape a corporate job that had their designer, Marisa Howard, drowning in boredom. Seaworthy has grown from a hobby to a full-blown jewelry production facility, employing skilled artisans and honoring a history of US manufactured jewelry.</>
@@ -111,7 +118,7 @@ export const projects = [
     spots: spots({ 1: 'Font creation', 2: 'Logo design' }, { 2: { x: '17.5%', y: '79%' } }),
   },
   {
-    n: '07', title: 'West Of The Rain', disc: 'Digital', year: '2022',
+    n: '08', title: 'West Of The Rain', disc: 'Digital', year: '2022',
     headline: 'A knot that ties it all together.',
     context: (
       <>In 2022 my good friend Ian Edwards started his own hat making business called <L href="https://www.instagram.com/westoftherain/">West Of The Rain</L>. I took his idea a little further and incorporated a tattoo that I gave him years ago on the top of his hand. The figure eight knot became his business logo, and launched a whole new look and feel.</>
@@ -123,7 +130,7 @@ export const projects = [
     spots: spots({ 3: 'Logo design' }, { 3: { x: 'calc(50% + clamp(320px,62vw,820px) * 0.18)', y: '70%' } }),
   },
   {
-    n: '08', title: 'Elixer Race Team', disc: 'Print', year: '2024',
+    n: '09', title: 'Elixer Race Team', disc: 'Print', year: '2024',
     headline: 'A first-in-class crew deserves a first-in-class look.',
     context: (
       <>I seasonally crew on a 1981 Cal 9.2 racing sailboat called Elixer. The 9.2 refers to meters but in feet she’s roughly 30. One year our crew placed 1st in our class and we decided to re-brand a little bit.</>
@@ -135,7 +142,7 @@ export const projects = [
     spots: spots(),
   },
   {
-    n: '09', title: 'West Coast Fitness Challenge', disc: 'Multimedia', year: '2024',
+    n: '10', title: 'West Coast Fitness Challenge', disc: 'Multimedia', year: '2024',
     headline: 'Built to move people.',
     context: (
       <>In 2024, the organisers of West Coast Fitness Challenge asked me to create the look of the event, from the logo to the content that would promote it across print, video and social.</>
