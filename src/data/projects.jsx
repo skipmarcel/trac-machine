@@ -3,6 +3,7 @@
 import FKCaseStudy from '../components/FKCaseStudy.jsx';
 import PTCaseStudy from '../components/PTCaseStudy.jsx';
 import PLCaseStudy from '../components/PLCaseStudy.jsx';
+import TTCaseStudy from '../components/TTCaseStudy.jsx';
 
 const A = '/assets/';
 const C = '/assets/case/';
@@ -94,6 +95,15 @@ export const projects = [
     rowAspect: '1200 / 834',   // show the whole screen in the open row, not a 16:10 crop
     spots: [],
     custom: PLCaseStudy,
+  },
+  {
+    n: 'TT', title: 'TuneIn', disc: 'Full-stack web app', year: '2026',
+    slug: 'tunein', section: 'apps',
+    summary: 'A “name that tune” game built on Spotify in React and TypeScript, with forgiving answer matching and a shared leaderboard that scores every game on the server. The case covers the screens, the architecture and the API.',   // open row in Selected work
+    hero: { src: '/assets/tt/tt-thumb.jpg' },
+    rowAspect: '1440 / 900',   // the whole desktop screen in the open row
+    spots: [],
+    custom: TTCaseStudy,
   },
   {
     n: '04', title: 'Toro Bravo Cookbook', disc: 'Print', year: '2013',
