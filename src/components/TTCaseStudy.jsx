@@ -167,6 +167,30 @@ function Diagram() {
   );
 }
 
+// Overview copy and stack list. Drawn inside the scaled panel on desktop; as normal,
+// readable text (mobile) on phones.
+function OverviewText({ mobile }) {
+  return (
+    <>
+      <div style={{ ...kicker, fontSize: mobile ? 12 : 14 }}><span>01 — Overview</span><span>Web app · Live</span></div>
+      <div style={rule} />
+      <h1 style={{ margin: 0, fontFamily: display, fontWeight: 700, fontSize: mobile ? 52 : 92, lineHeight: .98, letterSpacing: '-.02em', color: INK }}>TuneIn</h1>
+      <div style={{ display: 'grid', gridTemplateColumns: mobile ? '1fr' : 'minmax(0,1.35fr) minmax(0,1fr)', gap: mobile ? 28 : 56, alignItems: 'start' }}>
+        <p style={{ ...body, fontSize: mobile ? 17 : 22 }}>A “name that tune” game built on Spotify. You hear a clip from a playlist and name the artist (2 points) and the song (1 point), with forgiving answer matching. After 10 songs the best scores go on a shared leaderboard that never trusts a score sent from the browser. It’s a ground-up rebuild, in React and TypeScript, of a vanilla-JS project I built in coding school in 2023.</p>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: mobile ? 14 : 16, fontFamily: mono, fontSize: mobile ? 12 : 13, lineHeight: 1.6, letterSpacing: '.04em', textTransform: 'uppercase' }}>
+          {STACK.map(([k, v]) => (
+            <div key={k} style={{ display: 'flex', flexDirection: 'column', gap: 2 }}><span style={{ color: MUTED }}>{k}</span><span>{v}</span></div>
+          ))}
+          <div style={{ display: 'flex', flexWrap: 'wrap', gap: mobile ? '4px 22px' : 22 }}>
+            <a href={PLAY} {...ext} style={{ color: ACCENT, padding: mobile ? '10px 0' : 0 }}>Play it ↗</a>
+            <a href={REPO} {...ext} style={{ color: ACCENT, padding: mobile ? '10px 0' : 0 }}>Source on GitHub ↗</a>
+          </div>
+        </div>
+      </div>
+    </>
+  );
+}
+
 function Code({ children, small }) {
   return (
     <pre style={{ margin: 0, padding: small ? '12px 14px' : '14px 18px', background: '#050505', border: `1px solid ${LINE}`, borderRadius: 10, overflowX: 'auto',
@@ -204,26 +228,16 @@ export default function TTCaseStudy() {
   return (
     <div ref={wrap} className="tt-case" style={{ width: '100%', maxWidth: 1200, margin: '0 auto', background: BG, display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
 
-      <Panel scale={scale} label="01 Overview" height={1210}>
-        <div style={top}>
-          <div style={kicker}><span>01 — Overview</span><span>Web app · Live</span></div>
-          <div style={rule} />
-          <h1 style={{ margin: 0, fontFamily: display, fontWeight: 700, fontSize: 92, lineHeight: .98, letterSpacing: '-.02em', color: INK }}>TuneIn</h1>
-          <div style={{ display: 'grid', gridTemplateColumns: 'minmax(0,1.35fr) minmax(0,1fr)', gap: 56, alignItems: 'start' }}>
-            <p style={body}>A “name that tune” game built on Spotify. You hear a clip from a playlist and name the artist (2 points) and the song (1 point), with forgiving answer matching. After 10 songs the best scores go on a shared leaderboard that never trusts a score sent from the browser. It’s a ground-up rebuild, in React and TypeScript, of a vanilla-JS project I built in coding school in 2023.</p>
-            <div style={{ display: 'flex', flexDirection: 'column', gap: 16, fontFamily: mono, fontSize: 13, lineHeight: 1.6, letterSpacing: '.04em', textTransform: 'uppercase' }}>
-              {STACK.map(([k, v]) => (
-                <div key={k} style={{ display: 'flex', flexDirection: 'column', gap: 2 }}><span style={{ color: MUTED }}>{k}</span><span>{v}</span></div>
-              ))}
-              <div style={{ display: 'flex', gap: 22 }}>
-                <a href={PLAY} {...ext} style={{ color: ACCENT }}>Play it ↗</a>
-                <a href={REPO} {...ext} style={{ color: ACCENT }}>Source on GitHub ↗</a>
-              </div>
-            </div>
-          </div>
-        </div>
-        <Browser width={880} src="tt-desktop-home.webp" alt="TuneIn home screen on desktop: the title, how to score, a list of playlists and a Start button over a neon spirograph" style={{ position: 'absolute', left: 80, top: 560 }} />
-        <Phone src="tt-phone-home.webp" alt="TuneIn home screen on a phone" width={260} style={{ position: 'absolute', left: 860, top: 610 }} />
+      {/* On phones the overview text is unscaled flow content and only the screens below are scaled */}
+      {isMobile ? (
+        <section aria-label="01 Overview" style={{ ...flowSection, paddingBottom: 8 }}>
+          <OverviewText mobile />
+        </section>
+      ) : null}
+      <Panel scale={scale} label={isMobile ? 'TuneIn home screen' : '01 Overview'} height={isMobile ? 690 : 1210}>
+        {!isMobile && <div style={top}><OverviewText /></div>}
+        <Browser width={880} src="tt-desktop-home.webp" alt="TuneIn home screen on desktop: the title, how to score, a list of playlists and a Start button over a neon spirograph" style={{ position: 'absolute', left: 80, top: isMobile ? 40 : 560 }} />
+        <Phone src="tt-phone-home.webp" alt="TuneIn home screen on a phone" width={260} style={{ position: 'absolute', left: 860, top: isMobile ? 90 : 610 }} />
       </Panel>
 
       <Panel scale={scale} label="02 A round" height={1030}>
