@@ -2,6 +2,7 @@
 // and one case study. Images/videos live in /public/assets.
 import FKCaseStudy from '../components/FKCaseStudy.jsx';
 import PTCaseStudy from '../components/PTCaseStudy.jsx';
+import PLCaseStudy from '../components/PLCaseStudy.jsx';
 
 const A = '/assets/';
 const C = '/assets/case/';
@@ -35,7 +36,7 @@ const spots = (labels = {}, pos = {}) =>
   thumb: row thumbnail and open-row image (defaults to hero.src)
   intro / embed / heroOnly: heading above the hero, an interactive HTML frame below it, and stopping after those
 */
-// Selected work sections, in page order. A section with no cases (Apps, for now) is hidden.
+// Selected work sections, in page order. A section with no cases is hidden.
 export const sections = [
   { id: 'web', name: 'Web', blurb: 'Sites designed and built end to end.' },
   { id: 'apps', name: 'Apps', blurb: 'Product and interface design.' },
@@ -83,6 +84,14 @@ export const projects = [
     hero: { src: '/assets/pt/jordan-117.jpg' },
     spots: [],
     custom: PTCaseStudy,
+  },
+  {
+    n: 'PL', title: 'PurpleLine', disc: 'Product design', year: '2026',
+    slug: 'purpleline', section: 'apps',
+    summary: 'A digital consent and release form for tattoo shops, running on a dedicated iPad at the front desk. It never touches the client’s phone and keeps working when the Wi-Fi drops. The case ends with a working kiosk you can click through.',   // open row in Selected work
+    hero: { src: '/assets/pl/pl-thumb.jpg' },
+    spots: [],
+    custom: PLCaseStudy,
   },
   {
     n: '04', title: 'Toro Bravo Cookbook', disc: 'Print', year: '2013',

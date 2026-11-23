@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Work Sections</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400..700&amp;family=Spline+Sans+Mono:wght@400;500;700&amp;display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box}
+html,body{margin:0;background:#ededea;color:#141413}
+body{font-family:Nunito,Helvetica,sans-serif;font-size:16px;-webkit-font-smoothing:antialiased}
+a{color:inherit}
+button{font:inherit}
+button:focus-visible,a:focus-visible{outline:2px solid #e0561f;outline-offset:2px}
+img,video{display:block;max-width:100%}
+</style>
+</helmet>
+<div ref="{{ rootRef }}" style="min-height:100vh;background:#ededea;color:#141413;padding:0 clamp(16px,3vw,40px) 72px">
+
+  <header style="display:flex;justify-content:space-between;align-items:baseline;gap:12px;padding:14px 0;border-bottom:1px solid #141413">
+    <span style="font-weight:600;letter-spacing:-.01em">TRAC MACHINE</span>
+    <nav style="display:flex;flex-wrap:wrap;justify-content:flex-end;gap:4px 24px">
+      <sc-for list="{{ chapters }}" as="c" hint-placeholder-count="5">
+        <a href="#{{ c.id }}" onClick="{{ c.go }}" style="text-decoration:none">{{ c.name }}</a>
+      </sc-for>
+    </nav>
+  </header>
+
+  <div id="work-track" style="margin-top:40px;overflow-x:clip;display:grid">
+  <section id="work" aria-hidden="{{ listHidden }}" style="grid-area:1 / 1;min-width:0;background:#e2e2de;border-radius:8px;padding:clamp(20px,4vw,48px);display:flex;flex-direction:column;gap:48px;transform:{{ listT }};opacity:{{ listOp }};height:{{ listH }};overflow:{{ listOv }};visibility:{{ listVis }};transition:{{ paneTr }}">
+    <div style="border-bottom:1px solid #141413;padding-bottom:12px;margin-bottom:-24px">
+      <h2 style="margin:0;font-size:clamp(22px,2.2vw,32px);font-weight:500;letter-spacing:-.03em">Selected work</h2>
+    </div>
+
+    <sc-for list="{{ chapters }}" as="c" hint-placeholder-count="5">
+      <div id="{{ c.id }}" style="display:flex;flex-wrap:wrap;gap:12px 24px;border-top:1px solid #141413;padding-top:14px;scroll-margin-top:24px">
+        <div style="flex:1 1 200px;display:flex;flex-direction:column;gap:8px">
+          <h3 style="margin:0;font-size:clamp(28px,3.2vw,48px);font-weight:550;font-stretch:88%;letter-spacing:-.045em;line-height:.92">{{ c.name }}</h3>
+          <span style="font-size:15px;line-height:1.4;color:#3b3a37;max-width:28ch">{{ c.blurb }}</span>
+        </div>
+        <div style="flex:999 1 460px;min-width:0">
+          <sc-for list="{{ c.rows }}" as="r" hint-placeholder-count="3">
+            <div style="border-bottom:1px solid rgba(20,20,19,.22)">
+              <button type="button" onClick="{{ r.toggle }}" aria-expanded="{{ r.expanded }}" aria-controls="{{ r.pid }}" style="width:100%;display:grid;grid-template-columns:{{ rowCols }};gap:16px;align-items:center;padding:10px 0;border:0;background:none;color:#141413;text-align:left;cursor:pointer;transition:padding .4s cubic-bezier(.2,.7,.1,1)" style-hover="padding-left:12px">
+                <span style="position:relative;width:100%;aspect-ratio:3 / 2;border-radius:6px;overflow:hidden;background:{{ r.thumbBg }}">
+                  <sc-if value="{{ r.thumb }}" hint-placeholder-val="{{ true }}"><img src="{{ r.thumb }}" alt="" loading="lazy" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover"></sc-if>
+                  <sc-if value="{{ r.noThumb }}" hint-placeholder-val="{{ false }}"><span style="position:absolute;inset:0;display:grid;place-items:center;font-family:'Spline Sans Mono',monospace;font-size:12px;color:{{ r.thumbFg }}">{{ r.mark }}</span></sc-if>
+                </span>
+                <span style="min-width:0;display:flex;flex-direction:column;gap:4px">
+                  <span style="font-size:clamp(18px,1.8vw,26px);font-weight:500;letter-spacing:-.02em;line-height:1.1">{{ r.title }}<sc-if value="{{ r.isNew }}" hint-placeholder-val="{{ false }}"><span style="margin-left:10px;font-family:'Spline Sans Mono',monospace;font-size:12px;color:#c2410c;vertical-align:middle">NEW</span></sc-if></span>
+                  <span style="font-family:'Spline Sans Mono',monospace;font-size:13px;color:#5d5c58">{{ r.disc }}</span>
+                </span>
+                <span aria-hidden="true" style="display:grid;place-items:center;width:36px;height:36px;border-radius:50%;border:1px solid {{ r.icoBd }};background:{{ r.icoBg }};color:{{ r.icoFg }};font-size:17px;line-height:1;transition:transform .45s cubic-bezier(.2,.7,.1,1), background .25s, color .25s, border-color .25s;transform:{{ r.icoRot }}">↓</span>
+              </button>
+              <div id="{{ r.pid }}" role="region" aria-label="{{ r.title }}" style="display:grid;grid-template-rows:{{ r.gridRows }};transition:{{ r.rowTr }}">
+                <div style="min-height:0;overflow:hidden;visibility:{{ r.vis }};transition:visibility 0s linear {{ r.visDelay }}">
+                  <div style="display:flex;flex-wrap:wrap;gap:20px 24px;padding:8px 0 24px;opacity:{{ r.op }};transform:{{ r.shift }};transition:opacity .45s ease .1s, transform .55s cubic-bezier(.2,.7,.1,1)">
+                    <div style="flex:3 1 340px;min-width:0;position:relative;aspect-ratio:16 / 10;border-radius:8px;overflow:hidden;background:{{ r.thumbBg }}">
+                      <sc-if value="{{ r.video }}" hint-placeholder-val="{{ false }}"><video src="{{ r.video }}" autoplay="" muted="" loop="" playsinline="" preload="metadata" disablepictureinpicture="" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover"></video></sc-if>
+                      <sc-if value="{{ r.bigImg }}" hint-placeholder-val="{{ true }}"><img src="{{ r.bigImg }}" alt="" loading="lazy" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover"></sc-if>
+                      <sc-if value="{{ r.noBig }}" hint-placeholder-val="{{ false }}"><span style="position:absolute;inset:0;display:grid;place-items:center;font-family:'Spline Sans Mono',monospace;font-size:13px;color:#5d5c58">Case images coming</span></sc-if>
+                    </div>
+                    <div style="flex:2 1 260px;min-width:0;display:flex;flex-direction:column;gap:16px;align-items:flex-start">
+                      <h4 style="margin:0;font-size:clamp(24px,2.6vw,38px);font-weight:500;letter-spacing:-.035em;line-height:1">{{ r.headline }}</h4>
+                      <p style="margin:0;line-height:1.55;color:#3b3a37;text-wrap:pretty">{{ r.text }}</p>
+                      <button type="button" onClick="{{ r.view }}" style="display:inline-flex;align-items:center;gap:10px;font-size:16px;font-weight:500;padding:10px 16px;border-radius:8px;border:1px solid #141413;background:transparent;color:#141413;cursor:pointer;transition:all .25s" style-hover="background:#141413;color:#ededea">View case <span>→</span></button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </sc-for>
+        </div>
+      </div>
+    </sc-for>
+  </section>
+
+  <!-- case view: slides in from the right; the bar stays pinned while you read -->
+  <article aria-hidden="{{ caseHidden }}" aria-label="{{ k.title }}" style="grid-area:1 / 1;min-width:0;transform:{{ caseT }};opacity:{{ caseOp }};height:{{ caseH }};overflow:{{ caseOv }};visibility:{{ caseVis }};transition:{{ paneTr }}">
+    <div style="position:sticky;top:0;z-index:5;display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:10px 16px;padding:10px 0;background:rgba(237,237,234,.92);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);border-bottom:1px solid #141413">
+      <button type="button" ref="{{ backRef }}" onClick="{{ back }}" style="display:inline-flex;align-items:center;gap:10px;height:44px;padding:0 18px 0 14px;border-radius:999px;border:1px solid #141413;background:#141413;color:#ededea;font-size:16px;font-weight:500;cursor:pointer;transition:all .25s" style-hover="background:#e0561f;border-color:#e0561f;color:#fff"><span aria-hidden="true" style="font-size:18px">←</span> Selected work</button>
+      <span style="flex:1 1 160px;min-width:0;font-family:'Spline Sans Mono',monospace;font-size:13px;color:#5d5c58;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{ k.secName }} / <span style="color:#141413">{{ k.title }}</span></span>
+      <span style="display:flex;gap:6px">
+        <button type="button" onClick="{{ prevCase }}" aria-label="Previous case: {{ prevTitle }}" style="width:44px;height:44px;border-radius:50%;border:1px solid rgba(20,20,19,.35);background:transparent;color:#141413;cursor:pointer;transition:border-color .25s" style-hover="border-color:#141413">←</button>
+        <button type="button" onClick="{{ nextCase }}" aria-label="Next case: {{ nextTitle }}" style="width:44px;height:44px;border-radius:50%;border:1px solid rgba(20,20,19,.35);background:transparent;color:#141413;cursor:pointer;transition:border-color .25s" style-hover="border-color:#141413">→</button>
+      </span>
+    </div>
+
+    <div style="display:flex;flex-wrap:wrap;justify-content:space-between;align-items:baseline;gap:8px 24px;padding:28px 0 20px">
+      <h2 style="margin:0;font-size:clamp(40px,6vw,96px);font-weight:550;font-stretch:88%;letter-spacing:-.05em;line-height:.9;max-width:14ch">{{ k.title }}</h2>
+      <span style="font-family:'Spline Sans Mono',monospace;font-size:14px;color:#c2410c">{{ k.disc }}</span>
+    </div>
+
+    <div style="position:relative;aspect-ratio:16 / 9;border-radius:8px;overflow:hidden;background:{{ k.thumbBg }}">
+      <sc-if value="{{ k.heroVideo }}" hint-placeholder-val="{{ false }}"><video src="{{ k.heroVideo }}" autoplay="" muted="" loop="" playsinline="" preload="metadata" disablepictureinpicture="" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover"></video></sc-if>
+      <sc-if value="{{ k.heroImg }}" hint-placeholder-val="{{ true }}"><img src="{{ k.heroImg }}" alt="" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover"></sc-if>
+      <sc-if value="{{ k.noHero }}" hint-placeholder-val="{{ false }}"><span style="position:absolute;inset:0;display:grid;place-items:center;font-family:'Spline Sans Mono',monospace;font-size:13px;color:#5d5c58">Case images coming</span></sc-if>
+    </div>
+
+    <div style="display:flex;flex-wrap:wrap;gap:24px clamp(24px,4vw,64px);padding:40px 0">
+      <h3 style="flex:1 1 320px;margin:0;font-size:clamp(28px,3.4vw,52px);font-weight:500;letter-spacing:-.04em;line-height:.98">{{ k.headline }}</h3>
+      <p style="flex:1 1 320px;margin:0;line-height:1.6;color:#3b3a37;text-wrap:pretty">{{ k.text }}</p>
+    </div>
+
+    <sc-if value="{{ k.hasGallery }}" hint-placeholder-val="{{ true }}">
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,280px),1fr));gap:8px">
+        <sc-for list="{{ k.gallery }}" as="g" hint-placeholder-count="2">
+          <div style="position:relative;aspect-ratio:4 / 3;border-radius:8px;overflow:hidden;background:#141413">
+            <img src="{{ g }}" alt="" loading="lazy" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover">
+          </div>
+        </sc-for>
+      </div>
+    </sc-if>
+
+    <div style="display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:12px;margin-top:48px;padding-top:16px;border-top:1px solid #141413">
+      <button type="button" onClick="{{ back }}" style="display:inline-flex;align-items:center;gap:10px;font-size:16px;font-weight:500;padding:12px 18px;border-radius:8px;border:1px solid #141413;background:transparent;color:#141413;cursor:pointer;transition:all .25s" style-hover="background:#141413;color:#ededea"><span aria-hidden="true">←</span> Back to Selected work</button>
+      <button type="button" onClick="{{ nextCase }}" style="display:inline-flex;align-items:center;gap:12px;padding:12px 18px;border-radius:8px;border:1px solid #e2e2de;background:#e2e2de;color:#141413;cursor:pointer;text-align:left;transition:all .25s" style-hover="background:rgba(20,20,19,.22);border-color:rgba(20,20,19,.22)"><span style="display:flex;flex-direction:column"><span style="font-family:'Spline Sans Mono',monospace;font-size:12px;color:#5d5c58">Next case</span><span style="font-size:18px;font-weight:500;letter-spacing:-.02em">{{ nextTitle }}</span></span><span aria-hidden="true" style="font-size:18px">→</span></button>
+    </div>
+  </article>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1280,"height":2400}}'>
+const A = 'assets/', C = 'assets/case/';
+const SECTIONS = [
+  { id: 'web', name: 'Web', blurb: 'Sites designed and built end to end.' },
+  { id: 'apps', name: 'Apps', blurb: 'Product and interface design.' },
+  { id: 'print', name: 'Print', blurb: 'Books, labels and printed goods.' },
+  { id: 'brand', name: 'Brand', blurb: 'Identities, marks and type.' },
+  { id: 'campaign', name: 'Campaign', blurb: 'One look across motion, print and social.' },
+];
+const CASES = [
+  { title: 'Forrester Karr Woodworking', sec: 'web', disc: 'Web design', thumb: A + 'fk/fk-hero-beams.jpg',
+    headline: 'Forrester Karr Woodworking', text: 'A showcase site for Forrester Karr, a woodworker focused on fine cabinetry. An animated FK mark opens the site, eight commissions sit in a numbered gallery, and all text and photos are managed in Sanity so Forrester can update his work himself.' },
+  { title: 'Mountain View Heritage', sec: 'web', disc: 'Web design', thumb: C + 'mvh-kitchen-crew.jpg',
+    headline: 'Whole hog, whole brand.', text: 'Mountain View Heritage is a small, family-run farm in Oregon City, OR focused on nose-to-tail practices and whole-hog butchery. We’re working together to create a logo, online presence, and a look that suits the feel of their business.' },
+  { title: 'Psychic Tiger', sec: 'web', disc: 'Web design', thumb: A + 'pt/jordan-117.jpg',
+    headline: 'Psychic Tiger', text: 'A website for Psychic Tiger, Jordan Burns’s personal training practice in Portland. A line-drawn logo of twin tiger heads and the wordmark draws itself from the centre outward over a crossfading photo hero.' },
+  { title: 'New case one', sec: 'apps', disc: 'App design', isNew: true, headline: 'New case one', text: 'Placeholder until the case is added.' },
+  { title: 'New case two', sec: 'apps', disc: 'App design', isNew: true, headline: 'New case two', text: 'Placeholder until the case is added.' },
+  { title: 'Toro Bravo Cookbook', sec: 'print', disc: 'Print', thumb: C + 'tm-case02-2.webp',
+    headline: 'TORO BRAVO: STORIES. RECIPES. NO BULL.', text: 'I designed the book\'s look and feel, including the original logo, the outside and inside covers, and aspects of the page design.' },
+  { title: 'Joyful Noise Table Wine', sec: 'print', disc: 'Packaging', thumb: C + 'tm-case03-hero.webp',
+    headline: 'From skin to table wine.', text: 'Approach: the label began as a hand-painted watercolor, echoing the bold lines and limited palette of late 20th-century American traditional tattoo flash.' },
+  { title: 'Elixer Race Team', sec: 'print', disc: 'Print', thumb: C + 'tm-case07-hero.jpg',
+    headline: 'A first-in-class crew deserves a first-in-class look.', text: 'The logo and supporting artwork were printed on t-shirts, beer koozies and hats.' },
+  { title: 'Seaworthy Jewelry', sec: 'brand', disc: 'Branding', thumb: C + 'd1-case-hero.webp',
+    headline: 'Seaworthy brand identity reboot', text: 'Approach: a redesign of the Seaworthy logo, refining the mark while keeping its maritime heritage, then carrying the new identity through type and colour decisions from a business card to a website.' },
+  { title: 'West Of The Rain', sec: 'brand', disc: 'Digital', thumb: C + 'tm-case06-hero.webp',
+    headline: 'A knot that ties it all together.', text: 'The figure eight knot became his business logo, and launched a whole new look and feel.' },
+  { title: 'The Athletic Community', sec: 'brand', disc: 'Apparel', thumb: C + 'tm-case04-hero.webp',
+    headline: 'The best athletic socks in the game should have the best design in the game.', text: 'Approach: The Athletic was looking for a tattoo design related line of socks that remained simple enough to embroider.' },
+  { title: 'CLEAResult', sec: 'campaign', disc: 'Motion graphics', mark: 'CR', dark: true, video: A + 'cr-data-story_1.mp4',
+    headline: 'Motion Graphics and video work using the CLEAResult logo and public data', text: 'Tech used: Adobe Media Encoder, Adobe Ilustrator, Adobe Photoshop, Claude Design and Claude Code.' },
+  { title: 'West Coast Fitness Challenge', sec: 'campaign', disc: 'Multimedia', thumb: C + 'tm-case08-hero.webp',
+    headline: 'Built to move people.', text: 'Approach: I designed one visual system across every format, including the logo, posters, video titles and social templates, so the event looked the same everywhere it appeared.' },
+];
+// case view: hero (video wins) and detail images
+const EXTRA = {
+  'Forrester Karr Woodworking': { gallery: [A + 'fk/business-card.jpg'] },
+  'Mountain View Heritage': { gallery: [C + 'mvh-phone-1.jpg', C + 'mvh-phone-2.jpg', C + 'mvh-phone-3.jpg'] },
+  'Psychic Tiger': { gallery: [A + 'pt/jordan-36.jpg', A + 'pt/jordan-39.jpg'] },
+  'Toro Bravo Cookbook': { video: A + 'toro-cookbook.mp4', gallery: [C + 'tm-case02-2.webp', C + 'tm-case02-3.webp', C + 'tm-case02-pattern.jpg'] },
+  'Joyful Noise Table Wine': { gallery: [C + 'tm-case03-2.webp'] },
+  'Elixer Race Team': { gallery: [A + 'elixir-front.png', C + 'tm-case07-3.jpg'] },
+  'Seaworthy Jewelry': { gallery: [C + 'd1-case-2.webp', C + 'd1-case-3.webp', C + 'tm-case01-invite.jpg'] },
+  'West Of The Rain': { gallery: [A + 'west-of-the-rain-anne.png', C + 'tm-case06-3.webp'] },
+  'The Athletic Community': { gallery: [C + 'tm-case04-2.webp', C + 'tm-case04-3.webp'] },
+  'West Coast Fitness Challenge': { gallery: [C + 'tm-case08-2.webp', C + 'tm-case08-3.webp', C + 'tm-case08-4.jpg'] },
+};
+// cases in reading order (section by section), for the case view's previous / next
+const ORDER = SECTIONS.flatMap(s => CASES.filter(c => c.sec === s.id));
+const secName = (id) => SECTIONS.find(s => s.id === id).name;
+const slug = (t) => 'case-' + t.toLowerCase().replace(/[^a-z0-9]+/g, '-');
+const RM = () => matchMedia('(prefers-reduced-motion: reduce)').matches;
+const SLIDE = 650;
+const noop = (e) => e.preventDefault();
+
+class Component extends DCLogic {
+  state = { open: {}, mob: false, view: 'list', settled: true, cur: 0 };
+  rootRef = React.createRef(); backRef = React.createRef();
+  componentDidMount() {
+    this.mq = matchMedia('(max-width: 720px)');
+    this.onMq = () => this.setState({ mob: this.mq.matches });
+    this.mq.addEventListener('change', this.onMq); this.onMq();
+    this.onKey = (e) => { if (e.key === 'Escape' && this.state.view === 'case') this.back(); };
+    addEventListener('keydown', this.onKey);
+  }
+  componentWillUnmount() { this.mq && this.mq.removeEventListener('change', this.onMq); removeEventListener('keydown', this.onKey); clearTimeout(this.t); }
+  el(sel) { const r = this.rootRef.current; return r && r.querySelector(sel); }
+  scrollTo(node, after) {
+    if (!node) return;
+    const y = node.getBoundingClientRect().top + scrollY - 16;
+    scrollTo({ top: Math.max(0, y), behavior: RM() ? 'auto' : 'smooth' });
+  }
+  // both panes stay visible while they slide; afterwards the hidden one collapses so the page height fits the one in view
+  go(view, cur, then) {
+    clearTimeout(this.t);
+    this.setState({ view, cur: cur ?? this.state.cur, settled: false }, () => {
+      then && then();
+      this.t = setTimeout(() => this.setState({ settled: true }), RM() ? 0 : SLIDE);
+    });
+  }
+  view(i) {
+    this.from = ORDER[i].title;
+    this.go('case', i, () => { this.scrollTo(this.el('#work-track')); setTimeout(() => this.backRef.current && this.backRef.current.focus({ preventScroll: true }), RM() ? 0 : SLIDE); });
+  }
+  step(d) {
+    const i = (this.state.cur + d + ORDER.length) % ORDER.length;
+    this.from = ORDER[i].title;
+    this.setState({ cur: i }, () => this.scrollTo(this.el('#work-track')));
+  }
+  back = (sectionId) => {
+    const t = this.from;
+    // every case is folded away again; snap skips the fold animation so the scroll lands on the right row
+    this.setState({ open: {}, snap: true });
+    this.go('list', null, () => {
+      setTimeout(() => this.setState({ snap: false }), RM() ? 0 : SLIDE);
+      const target = typeof sectionId === 'string' ? this.el('#' + sectionId) : t && this.el('#' + slug(t));
+      const row = target && (target.previousElementSibling || target);
+      this.scrollTo(typeof sectionId === 'string' ? target : row);
+      if (typeof sectionId !== 'string' && row) setTimeout(() => row.focus && row.focus({ preventScroll: true }), RM() ? 0 : SLIDE);
+    });
+  };
+  renderVals() {
+    const { open, mob, view, settled, cur } = this.state;
+    const inCase = view === 'case', tr = RM() ? 'none' : `transform ${SLIDE}ms cubic-bezier(.65,0,.35,1), opacity ${SLIDE}ms ease`;
+    const kc = ORDER[cur], kx = EXTRA[kc.title] || {};
+    const k = {
+      title: kc.title, disc: kc.disc, headline: kc.headline, text: kc.text, secName: secName(kc.sec),
+      heroVideo: kx.video || kc.video || '', heroImg: kx.video || kc.video ? '' : kc.thumb || '', noHero: !(kx.video || kc.video || kc.thumb),
+      thumbBg: kc.thumb || kc.video || kx.video ? '#141413' : '#d6d5d0',
+      gallery: kx.gallery || [], hasGallery: !!(kx.gallery && kx.gallery.length),
+    };
+    const row = (c) => {
+      const key = c.title, on = !!open[key];
+      return {
+        title: c.title, disc: c.disc, isNew: !!c.isNew, headline: c.headline, text: c.text, noop,
+        pid: slug(key), view: () => this.view(ORDER.indexOf(c)),
+        thumb: c.thumb || '', noThumb: !c.thumb, mark: c.mark || 'NEW',
+        thumbBg: c.dark || c.thumb ? '#141413' : '#d6d5d0', thumbFg: c.dark ? '#ededea' : '#5d5c58',
+        video: c.video || '', bigImg: c.video ? '' : c.thumb || '', noBig: !c.video && !c.thumb,
+        expanded: String(on), toggle: () => this.setState(s => ({ open: { ...s.open, [key]: !s.open[key] } })),
+        rowTr: this.state.snap ? 'none' : 'grid-template-rows .55s cubic-bezier(.2,.7,.1,1)',
+        gridRows: on ? '1fr' : '0fr', vis: on ? 'visible' : 'hidden', visDelay: on ? '0s' : '.55s', op: on ? 1 : 0, shift: on ? 'none' : 'translateY(-12px)',
+        icoRot: on ? 'rotate(180deg)' : 'none', icoBg: on ? '#141413' : 'transparent', icoFg: on ? '#ededea' : '#141413', icoBd: on ? '#141413' : 'rgba(20,20,19,.35)',
+      };
+    };
+    const hideList = inCase && settled, hideCase = !inCase && settled;
+    return {
+      rootRef: this.rootRef, backRef: this.backRef, back: () => this.back(),
+      rowCols: mob ? '96px minmax(0,1fr) 36px' : '150px minmax(0,1fr) 36px',
+      chapters: SECTIONS.map(s => ({ ...s, rows: CASES.filter(c => c.sec === s.id).map(row),
+        go: (e) => { e.preventDefault(); if (this.state.view === 'case') this.back(s.id); else this.scrollTo(this.el('#' + s.id)); } })),
+      paneTr: tr,
+      listT: inCase ? 'translateX(-104%)' : 'none', listOp: inCase ? 0 : 1, listHidden: String(inCase),
+      listH: hideList ? '0px' : 'auto', listOv: hideList ? 'hidden' : 'visible', listVis: hideList ? 'hidden' : 'visible',
+      caseT: inCase ? 'none' : 'translateX(104%)', caseOp: inCase ? 1 : 0, caseHidden: String(!inCase),
+      caseH: hideCase ? '0px' : 'auto', caseOv: hideCase ? 'hidden' : 'visible', caseVis: hideCase ? 'hidden' : 'visible',
+      k, prevCase: () => this.step(-1), nextCase: () => this.step(1),
+      prevTitle: ORDER[(cur - 1 + ORDER.length) % ORDER.length].title, nextTitle: ORDER[(cur + 1) % ORDER.length].title,
+    };
+  }
+}
+</script>
+</body>
+</html>
