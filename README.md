@@ -22,20 +22,20 @@ index.html                 fonts (Nunito, Spline Sans Mono), meta, favicon
 public/assets/             images, videos, resume PDF (served at /assets/...)
 src/
   main.jsx                 entry: global CSS + motion scripts + <App/>
-  App.jsx                  page shell, case state, smooth anchor scrolling
+  App.jsx                  page shell, smooth anchor scrolling, motion re-scans
   config.js                email / resume / social links, motion settings
   data/projects.jsx        ALL case-study content (edit copy here)
   components/
     Header.jsx             desktop grid nav + hamburger menu (≤720px); frosted while over the photo
     WorkWithTrac.jsx       payments page (/work-with-trac/)
     Hero.jsx               HeroPhoto (BSA photo band) + TRAC/MACHINE blur-in title + intro
-    Work.jsx               "Selected work" rows + cursor-follow preview
-    CaseStudy.jsx          case switcher, hero media + design-notes bar, copy, detail images (+ optional label / second tall box)
+    WorkSections.jsx       "Selected work": sections of open/close rows, the slide to a case, sticky bar, history (?case=slug)
+    CaseStudy.jsx          one case: hero media + design-notes bar, copy, detail images (+ optional label / second tall box)
     About.jsx              portrait + bio
     Contact.jsx            dark contact card
   hooks/useMediaQuery.js
   lib/
-    tm-motion.js           scroll reveals, parallax, cursor-follow preview
+    tm-motion.js           scroll reveals, parallax (and an unused cursor-follow preview)
     tm-interact.js         heading reveals, section scale-in, design-note number pulse, nav states
   styles/global.css        design tokens (CSS variables) + all component styles
 ```
@@ -43,7 +43,9 @@ src/
 ## Common edits
 
 - **Case copy, headlines, links, images:** `src/data/projects.jsx`. Each project is one object. Inline links use the `<L href>` helper.
-- **Add a case:** add an object to `projects`, put its images in `public/assets/case/`. The work list, case-number buttons and count update automatically.
+- **Add a case:** add an object to `projects` with a unique `slug`, a `section` (`web`, `apps`, `print`, `brand` or `campaign`) and a short `summary` for its open row, and put its images in `public/assets/case/`. Its row, the case view and ← → order update automatically. A section shows once it has a case.
+- **Sections:** names, blurbs and order are in `sections` in `projects.jsx`. Cases appear in each section in the order they're listed in `projects`.
+- **Per-case layout tweaks:** `.case--<slug>` in `global.css` (e.g. `.case--toro-bravo`).
 - **Design notes (bar under each hero image):** `spots({ 1: 'Label' })` on a project sets the numbered notes; `.case__notes` / `.note` in `global.css` style the bar. The x/y positions are left over from the old on-image hotspots and are no longer used. Cases 04 and 07 still use the default placeholder labels.
 - **Colours, spacing, radius:** CSS variables at the top of `global.css`. A gray "Mist" theme is noted there.
 - **Email / resume / socials:** `src/config.js`.
@@ -65,13 +67,12 @@ src/
 
 ## How the motion works
 
-`tm-motion.js` and `tm-interact.js` are framework-free scripts that attach to `window.TM` / `window.TMX`. `App.jsx` initialises them on the root element and re-scans after the case changes. They work through data attributes:
+`tm-motion.js` and `tm-interact.js` are framework-free scripts that attach to `window.TM` / `window.TMX`. `App.jsx` initialises them on the root element and re-scans when Selected work swaps between the list and a case. They work through data attributes:
 
 - `data-reveal="up|clip"` + `data-delay` → fade/clip in on scroll
 - `data-head` → heading "line rise"
 - `data-parallax="0.08"` → parallax depth
 - `data-sec` → section scale-in on scroll
-- `data-follow-zone`, `data-preview`, `data-preview-img` → cursor-follow preview circle in Work
 - `data-spot` → pulsing numbers in the design-notes bar
 - `data-btn`, `data-nav` → press feedback and nav hover/active states
 
