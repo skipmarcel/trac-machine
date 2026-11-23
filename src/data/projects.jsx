@@ -36,6 +36,7 @@ const spots = (labels = {}, pos = {}) =>
   summary: short text in the open row (row headline is headline, else intro.heading, else title)
   thumb: row thumbnail and open-row image (defaults to hero.src)
   rowAspect: shape of the open-row image, e.g. '1200 / 834', so a screen design isn't cropped (defaults to 16:10)
+  rowFocus: which part of the row images the crop keeps, as CSS object-position (e.g. '50% 94%' = near the bottom)
   intro / embed / heroOnly: heading above the hero, an interactive HTML frame below it, and stopping after those
 */
 // Selected work sections, in page order. A section with no cases is hidden.
@@ -108,6 +109,7 @@ export const projects = [
   {
     n: '04', title: 'Toro Bravo Cookbook', disc: 'Print', year: '2013',
     slug: 'toro-bravo', section: 'print',
+    rowAspect: '1200 / 1097',   // the whole cover in the open row
     summary: "I designed the book's look and feel, including the original logo, the outside and inside covers, and aspects of the page design.",   // open row in Selected work
     thumb: C + 'tm-case02-2.webp',   // row thumbnail
     headline: <>TORO BRAVO:<br />STORIES. RECIPES.<br />NO BULL.</>,   // explicit line breaks, one phrase per line
@@ -125,6 +127,7 @@ export const projects = [
   {
     n: '05', title: 'Joyful Noise Table Wine', disc: 'Packaging', year: '2025',
     slug: 'joyful-noise', section: 'print',
+    rowAspect: '1200 / 960',   // the whole label in the open row
     summary: 'Approach: the label began as a hand-painted watercolor, echoing the bold lines and limited palette of late 20th-century American traditional tattoo flash.',   // open row in Selected work
     headline: 'From skin to table wine.',
     context: (
@@ -139,6 +142,7 @@ export const projects = [
   {
     n: '09', title: 'Elixer Race Team', disc: 'Print', year: '2024',
     slug: 'elixer', section: 'print',
+    rowAspect: '3207 / 2505',   // the whole photo in the open row
     summary: 'The logo and supporting artwork were printed on t-shirts, beer koozies and hats.',   // open row in Selected work
     headline: 'A first-in-class crew deserves a first-in-class look.',
     context: (
@@ -169,6 +173,7 @@ export const projects = [
   {
     n: '08', title: 'West Of The Rain', disc: 'Digital', year: '2022',
     slug: 'west-of-the-rain', section: 'brand',
+    rowAspect: '4 / 3', rowFocus: '50% 100%',   // the open row frames the whole white WR and rope logo, low in the tall photo
     summary: 'The figure eight knot became his business logo, and launched a whole new look and feel.',   // open row in Selected work
     headline: 'A knot that ties it all together.',
     context: (

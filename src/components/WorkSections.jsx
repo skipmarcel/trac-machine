@@ -21,10 +21,11 @@ const caseUrl = (slug) => location.pathname + '?case=' + encodeURIComponent(slug
 
 function Row({ p, open, onToggle, onView }) {
   const id = p.slug, thumb = thumbOf(p), reel = p.heroOnly && p.hero.video;
+  const focus = p.rowFocus ? { objectPosition: p.rowFocus } : undefined;   // which part of the image the crop keeps
   return (
     <div className={'wrow' + (open ? ' is-open' : '')}>
       <button type="button" id={'row-' + id} className="wrow__btn" aria-expanded={open} aria-controls={'panel-' + id} onClick={onToggle}>
-        <span className="wrow__thumb">{thumb && <img src={thumb} alt="" loading="lazy" />}</span>
+        <span className="wrow__thumb">{thumb && <img src={thumb} alt="" loading="lazy" style={focus} />}</span>
         <span className="wrow__txt">
           <span className="wrow__title">{p.title}</span>
           <span className="wrow__disc">{p.disc}</span>
@@ -37,7 +38,7 @@ function Row({ p, open, onToggle, onView }) {
             <div className="wrow__media" style={p.rowAspect ? { aspectRatio: p.rowAspect, background: 'transparent' } : undefined}>
               {/* the reel only loads once its row is opened */}
               {reel ? (open && <video src={p.hero.video} autoPlay muted loop playsInline preload="metadata" disablePictureInPicture />)
-                : thumb && <img src={thumb} alt="" loading="lazy" />}
+                : thumb && <img src={thumb} alt="" loading="lazy" style={focus} />}
             </div>
             <div className="wrow__body">
               <h4 className="wrow__head">{rowHeadline(p)}</h4>
