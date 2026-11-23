@@ -34,7 +34,7 @@ function Row({ p, open, onToggle, onView }) {
       <div id={'panel-' + id} role="region" aria-labelledby={'row-' + id} className="wrow__panel">
         <div className="wrow__clip">
           <div className="wrow__inner">
-            <div className="wrow__media">
+            <div className="wrow__media" style={p.rowAspect ? { aspectRatio: p.rowAspect, background: 'transparent' } : undefined}>
               {/* the reel only loads once its row is opened */}
               {reel ? (open && <video src={p.hero.video} autoPlay muted loop playsInline preload="metadata" disablePictureInPicture />)
                 : thumb && <img src={thumb} alt="" loading="lazy" />}

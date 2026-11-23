@@ -34,6 +34,7 @@ const spots = (labels = {}, pos = {}) =>
   section: 'web' | 'apps' | 'print' | 'brand' | 'campaign' (see sections above); n is only a React key
   summary: short text in the open row (row headline is headline, else intro.heading, else title)
   thumb: row thumbnail and open-row image (defaults to hero.src)
+  rowAspect: shape of the open-row image, e.g. '1200 / 834', so a screen design isn't cropped (defaults to 16:10)
   intro / embed / heroOnly: heading above the hero, an interactive HTML frame below it, and stopping after those
 */
 // Selected work sections, in page order. A section with no cases is hidden.
@@ -90,6 +91,7 @@ export const projects = [
     slug: 'purpleline', section: 'apps',
     summary: 'A digital consent and release form for tattoo shops, running on a dedicated iPad at the front desk. It never touches the client’s phone and keeps working when the Wi-Fi drops. The case ends with a working kiosk you can click through.',   // open row in Selected work
     hero: { src: '/assets/pl/pl-thumb.jpg' },
+    rowAspect: '1200 / 834',   // show the whole screen in the open row, not a 16:10 crop
     spots: [],
     custom: PLCaseStudy,
   },
