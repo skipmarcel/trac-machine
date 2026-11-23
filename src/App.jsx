@@ -1,15 +1,10 @@
 import { useEffect, useLayoutEffect, useRef, useState } from 'react';
 import Header from './components/Header.jsx';
 import Hero, { HeroPhoto } from './components/Hero.jsx';
-import Work from './components/Work.jsx';
-import CaseStudy from './components/CaseStudy.jsx';
+import WorkSections from './components/WorkSections.jsx';
 import About from './components/About.jsx';
 import Contact from './components/Contact.jsx';
 import useMediaQuery from './hooks/useMediaQuery.js';
-import { projects, featured } from './data/projects.jsx';
-
-// Case study order: featured items first, then the numbered projects.
-const cases = [...featured, ...projects];
 import { MOTION, MOBILE_QUERY } from './config.js';
 
 const reduceMotion = () => matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -29,7 +24,7 @@ export default function App() {
   const rootRef = useRef(null);
   const isMobile = useMediaQuery(MOBILE_QUERY);
   const [menuOpen, setMenuOpen] = useState(false);
-  const [caseIdx, setCaseIdx] = useState(featured.length);   // open on the first numbered case
+  const workRef = useRef(null);
   const [overHero, setOverHero] = useState(true);
 
   // Header text/background follow the photo fade: --hdr-t is how faded the band is behind the
@@ -43,6 +38,7 @@ export default function App() {
       // Text flips over a short range where the bar's backdrop (photo fade + the bar's own tint) passes mid-tone,
       // so it never sits grey-on-grey for long.
       const lit = 1 - (1 - t) * (1 - 0.9 * t), k = Math.min(1, Math.max(0, (lit - 0.35) / 0.2));
+      root.style.setProperty('--hdr-h', hdr.offsetHeight + 'px');   // the case view's sticky bar sits under the header
       root.style.setProperty('--hdr-t', t.toFixed(3));
       root.style.setProperty('--hdr-ink', (k * k * (3 - 2 * k)).toFixed(3));
       setOverHero(t < 1);
@@ -61,17 +57,22 @@ export default function App() {
     window.TM.init(root);
     window.TMX.init(root);
   }, []);
-  useEffect(() => {
-    const t = setTimeout(() => { window.TM.init(rootRef.current); window.TMX.update(rootRef.current); }, 0);
-    return () => clearTimeout(t);
-  }, [caseIdx, isMobile]);
-
-  const scrollToId = (id) => {
-    const root = rootRef.current, sec = root.querySelector('#' + id); if (!sec) return;
-    const hdr = root.querySelector('header');
-    const off = hdr && getComputedStyle(hdr).position === 'sticky' ? hdr.getBoundingClientRect().height : 0;
-    window.scrollTo({ top: sec.getBoundingClientRect().top + scrollY - off, behavior: reduceMotion() ? 'auto' : 'smooth' });
+  // Re-scan after the layout changes (breakpoint) or Selected work swaps between the list and a case.
+  const rescan = useRef(0);
+  const refreshMotion = () => {
+    clearTimeout(rescan.current);
+    rescan.current = setTimeout(() => { window.TM.init(rootRef.current); window.TMX.update(rootRef.current); }, 0);
   };
+  useEffect(() => { refreshMotion(); return () => clearTimeout(rescan.current); }, [isMobile]);
+
+  // Scroll el to just under the sticky header (extra = more room above it).
+  const scrollToEl = (el, extra = 0, instant = false) => {
+    if (!el) return;
+    const hdr = rootRef.current.querySelector('header');
+    const off = hdr && getComputedStyle(hdr).position === 'sticky' ? hdr.getBoundingClientRect().height : 0;
+    window.scrollTo({ top: Math.max(0, el.getBoundingClientRect().top + scrollY - off - extra), behavior: instant || reduceMotion() ? 'auto' : 'smooth' });
+  };
+  const scrollToId = (id) => scrollToEl(rootRef.current.querySelector('#' + id));
 
   // Smooth-scroll in-page anchors with the sticky-header offset.
   const onRootClick = (e) => {
@@ -79,10 +80,10 @@ export default function App() {
     const a = e.target.closest && e.target.closest('a[href^="#"]'); if (!a) return;
     const id = a.getAttribute('href').slice(1); if (!id || !rootRef.current.querySelector('#' + id)) return;
     e.preventDefault();
-    if (menuOpen) { setMenuOpen(false); setTimeout(() => scrollToId(id), 30); } else scrollToId(id);
+    // From a case, slide back to the list first, then land on the link's target.
+    const go = () => (workRef.current && workRef.current.inCase() ? workRef.current.back({ to: id }) : scrollToId(id));
+    if (menuOpen) { setMenuOpen(false); setTimeout(go, 30); } else go();
   };
-
-  const openCase = (i) => { setCaseIdx(i); scrollToId('case'); };
 
   return (
     <div ref={rootRef} className="site" onClick={onRootClick} {...MOTION}
@@ -90,8 +91,7 @@ export default function App() {
       <HeroPhoto />
       <Header isMobile={isMobile} menuOpen={menuOpen} setMenuOpen={setMenuOpen} overHero={overHero} />
       <Hero isMobile={isMobile} />
-      <Work featured={featured} projects={projects} onOpen={openCase} />
-      <CaseStudy projects={cases} index={caseIdx} setIndex={setCaseIdx} onOpen={openCase} />
+      <WorkSections ref={workRef} scrollTo={scrollToEl} onSwap={refreshMotion} />
       <About />
       <Contact />
     </div>

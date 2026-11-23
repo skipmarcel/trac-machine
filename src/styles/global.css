@@ -134,49 +134,80 @@ img, video { display: block; max-width: 100%; }
 .btn--secondary:hover { background: var(--soft); border-color: var(--soft); color: var(--ink); }
 
 /* ---------- Work ---------- */
+/* Selected work and the case view share one track: both panes sit in the same grid cell and slide past each other.
+   overflow-x: clip (not hidden) so the case view's sticky bar still sticks. */
+.track { display: grid; overflow-x: clip; margin-bottom: var(--sec-pad); }
+.track__pane { grid-area: 1 / 1; min-width: 0; transition: transform 650ms cubic-bezier(.65, 0, .35, 1), opacity 650ms ease; }   /* 650ms = SLIDE in WorkSections.jsx */
 /* full-width gray band */
-.work { background: var(--surf); padding: clamp(32px, 5vw, 64px) var(--gutter); margin-bottom: var(--sec-pad); }
-.work__head { display: flex; justify-content: space-between; align-items: baseline; border-bottom: 1px solid var(--ink); padding-bottom: 12px; }
+.work { background: var(--surf); padding: clamp(32px, 5vw, 64px) var(--gutter); display: flex; flex-direction: column; gap: 48px; }
+.work__head { display: flex; justify-content: space-between; align-items: baseline; border-bottom: 1px solid var(--ink); padding-bottom: 12px; margin-bottom: -24px; }
 .h2 { margin: 0; font-size: clamp(28px, 3vw, 44px); font-weight: 500; letter-spacing: -.03em; }
-.row { display: grid; grid-template-columns: 44px minmax(0, 1fr) auto; gap: 12px; align-items: baseline; padding: 8px 0; border-bottom: 1px solid var(--soft); text-decoration: none; transition: padding .4s var(--ease), color .3s; }
-.row:hover { padding-left: 16px; }
-/* featured items above the numbered list: accent orange, no number column, set apart by a gap */
-.work__featured { margin-bottom: var(--gap3); }
-.row--featured { grid-template-columns: auto minmax(0, 1fr) auto; color: var(--acc); }
-/* featured row reads a size up from the numbered rows so it isn't overlooked */
-.row--featured .row__title, .row__lead { font-size: clamp(24px, 2.6vw, 38px); line-height: 1.1; }
-.row--featured strong { font-weight: 700; }
-.case__nav button.is-featured { color: var(--acc); border-color: var(--acc); }
-.case__nav button.is-featured.is-active { background: var(--acc); color: #fff; }
-.row__n { font-family: var(--mono); font-size: 14px; }
 .work .h2 { font-size: clamp(22px, 2.2vw, 32px); }
-.row__title { font-size: clamp(17px, 1.6vw, 24px); font-weight: 500; letter-spacing: -.02em; line-height: 1.05; }
-.row__meta { font-family: var(--mono); font-size: 14px; display: flex; gap: clamp(12px, 2vw, 24px); white-space: nowrap; justify-content: flex-end; align-items: center; }
+/* a section: name + blurb on the left, its case rows on the right (stacked on mobile) */
+.wsec { display: flex; flex-wrap: wrap; gap: 12px 24px; border-top: 1px solid var(--ink); padding-top: 14px; scroll-margin-top: 24px; }
+.wsec__name { flex: 1 1 200px; display: flex; flex-direction: column; gap: 8px; }
+.wsec__name h3 { margin: 0; font-size: clamp(28px, 3.2vw, 48px); font-weight: 550; font-stretch: 88%; letter-spacing: -.045em; line-height: .92; }
+.wsec__name p { margin: 0; font-size: 15px; line-height: 1.4; color: var(--body); max-width: 28ch; }
+.wsec__rows { flex: 999 1 460px; min-width: 0; }
+/* case row: thumbnail · title + discipline · round arrow; opens a panel underneath */
+.wrow { border-bottom: 1px solid var(--soft); }
+.wrow__btn { width: 100%; display: grid; grid-template-columns: 150px minmax(0, 1fr) 36px; gap: 16px; align-items: center; padding: 10px 0; border: 0; background: none; color: var(--ink); font: inherit; text-align: left; cursor: pointer; transition: padding .4s var(--ease); }
+.wrow__btn:hover { padding-left: 12px; }
+.wrow__thumb { position: relative; width: 100%; aspect-ratio: 3 / 2; border-radius: 6px; overflow: hidden; background: var(--ink); }
+.wrow__thumb img, .wrow__media img, .wrow__media video { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+.wrow__txt { min-width: 0; display: flex; flex-direction: column; gap: 4px; }
+.wrow__title { font-size: clamp(18px, 1.8vw, 26px); font-weight: 500; letter-spacing: -.02em; line-height: 1.1; }
+.wrow__disc { font-family: var(--mono); font-size: 13px; color: var(--muted); }
+.wrow__ico { display: grid; place-items: center; width: 36px; height: 36px; border-radius: 50%; border: 1px solid color-mix(in srgb, var(--ink) 35%, transparent); font-size: 17px; line-height: 1; transition: transform .45s var(--ease), background .25s, color .25s, border-color .25s; }
+.wrow.is-open .wrow__ico { transform: rotate(180deg); background: var(--ink); border-color: var(--ink); color: var(--bg); }
+/* the panel folds open by animating its grid row 0fr → 1fr; once closed it's hidden so its links leave the tab order */
+.wrow__panel { display: grid; grid-template-rows: 0fr; transition: grid-template-rows .55s var(--ease); }
+.wrow.is-open .wrow__panel { grid-template-rows: 1fr; }
+.wrow__clip { min-height: 0; overflow: hidden; visibility: hidden; transition: visibility 0s linear .55s; }
+.wrow.is-open .wrow__clip { visibility: visible; transition-delay: 0s; }
+.wrow__inner { display: flex; flex-wrap: wrap; gap: 20px 24px; padding: 8px 0 24px; opacity: 0; transform: translateY(-12px); transition: opacity .45s ease .1s, transform .55s var(--ease); }
+.wrow.is-open .wrow__inner { opacity: 1; transform: none; }
+.wrow__media { flex: 3 1 340px; min-width: 0; position: relative; aspect-ratio: 16 / 10; border-radius: var(--rad); overflow: hidden; background: var(--ink); }
+.wrow__body { flex: 2 1 260px; min-width: 0; display: flex; flex-direction: column; gap: 16px; align-items: flex-start; }
+.wrow__head { margin: 0; font-size: clamp(24px, 2.6vw, 38px); font-weight: 500; letter-spacing: -.035em; line-height: 1; text-wrap: balance; }
+.wrow__text { margin: 0; line-height: 1.55; color: var(--body); text-wrap: pretty; }
+.wrow__view { display: inline-flex; align-items: center; gap: 10px; font: inherit; font-size: 16px; font-weight: 500; padding: 10px 16px; border-radius: var(--rad); border: 1px solid var(--ink); background: transparent; color: var(--ink); cursor: pointer; transition: background .25s, color .25s, border-color .25s; }
+.wrow__view:hover { background: var(--ink); color: var(--bg); }
+/* on the way back from a case every row folds shut at once, without animating */
+.work.is-snap .wrow__panel, .work.is-snap .wrow__clip, .work.is-snap .wrow__inner, .work.is-snap .wrow__ico { transition: none; }
 @media (max-width: 720px) {
-  .row { grid-template-columns: 30px minmax(0, 1fr); gap: 4px 8px; }
-  .row__meta { grid-column: 2; justify-content: flex-start; font-size: 13px; color: var(--muted); }
+  .wrow__btn { grid-template-columns: 96px minmax(0, 1fr) 36px; gap: 12px; }
 }
-@media (max-width: 720px) {
-  .row--featured { grid-template-columns: auto minmax(0, 1fr) auto; }
-  .row--featured .row__meta { grid-column: auto; color: inherit; }
+@media (prefers-reduced-motion: reduce) {
+  .track__pane, .wrow__btn, .wrow__ico, .wrow__panel, .wrow__clip, .wrow__inner { transition: none; }
 }
-.follow { position: fixed; left: 0; top: 0; width: 160px; height: 160px; pointer-events: none; opacity: 0; transition: opacity .3s; z-index: 40; }
-.follow__mask { position: absolute; inset: 0; border-radius: 50%; overflow: hidden; opacity: .55; }
-.follow__item { position: absolute; inset: 0; background-color: var(--acc); opacity: 0; transition: opacity .25s; }
-.follow__item > img, .follow__pin { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0; }
-.follow__pin { background: #fff; }
-.follow__pin img { width: 100%; height: 100%; object-fit: cover; }
-@media (hover: none), (max-width: 720px) { .follow { display: none; } }
 
 /* ---------- Case study ---------- */
 .case__hdr { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 240px), 1fr)); gap: 12px; border-top: 1px solid var(--ink); padding-top: 16px; margin-bottom: var(--gap2); font-family: var(--mono); font-size: clamp(16px, 1.4vw, 20px); }
 .case__title { font-weight: 700; }
-.case__nav { display: flex; gap: 6px; flex-wrap: wrap; align-items: center; margin: calc(-1 * var(--gap1)) 0 var(--gap2); font-family: var(--mono); font-size: 13px; }
-.case__nav button { height: 34px; min-width: 34px; padding: 0 10px; border: 1px solid var(--soft); border-radius: var(--rad); background: transparent; color: var(--ink); cursor: pointer; font: inherit; transition: all .25s; }
-.case__nav button:hover { border-color: var(--ink); }
-.case__nav button.is-active { background: var(--ink); color: var(--bg); border-color: var(--ink); }
-.case__nav .case__arrow { width: 34px; padding: 0; }
-.case__nav.case__nav--bottom { margin: var(--gap3) 0 0; }
+/* case view: sticky bar under the site header, and the footer under the case */
+.case { padding-top: 0; }
+.case__bar { position: sticky; top: var(--hdr-h, 45px); z-index: 5; display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 10px 16px; padding: 10px 0; margin-bottom: var(--gap3); background: var(--bg-glass); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); border-bottom: 1px solid var(--ink); }
+.case__back { display: inline-flex; align-items: center; gap: 10px; height: 44px; padding: 0 18px 0 14px; border-radius: 999px; border: 1px solid var(--ink); background: var(--ink); color: var(--bg); font: inherit; font-size: 16px; font-weight: 500; cursor: pointer; transition: background .25s, color .25s, border-color .25s; }
+.case__back span { font-size: 18px; }
+.case__back:hover { background: var(--acc); border-color: var(--acc); color: #fff; }
+.case__crumb { flex: 1 1 160px; min-width: 0; font-family: var(--mono); font-size: 13px; color: var(--muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.case__crumb span { color: var(--ink); }
+.case__steps { display: flex; gap: 6px; }
+.case__step { width: 44px; height: 44px; border-radius: 50%; border: 1px solid color-mix(in srgb, var(--ink) 35%, transparent); background: transparent; color: var(--ink); font: inherit; cursor: pointer; transition: border-color .25s; }
+.case__step:hover { border-color: var(--ink); }
+.case__foot { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 12px; margin-top: 48px; padding-top: 16px; border-top: 1px solid var(--ink); }
+.case__backlink { display: inline-flex; align-items: center; gap: 10px; font: inherit; font-size: 16px; font-weight: 500; padding: 12px 18px; border-radius: var(--rad); border: 1px solid var(--ink); background: transparent; color: var(--ink); cursor: pointer; transition: background .25s, color .25s, border-color .25s; }
+.case__backlink:hover { background: var(--ink); color: var(--bg); }
+.case__next { display: inline-flex; align-items: center; gap: 12px; padding: 12px 18px; border-radius: var(--rad); border: 1px solid var(--surf); background: var(--surf); color: var(--ink); font: inherit; text-align: left; cursor: pointer; transition: background .25s, color .25s, border-color .25s; }
+.case__next:hover { background: var(--soft); border-color: var(--soft); }
+.case__next > span:last-child { font-size: 18px; }
+.case__next-txt { display: flex; flex-direction: column; }
+.case__next-txt span:first-child { font-family: var(--mono); font-size: 12px; color: var(--muted); }
+.case__next-txt span:last-child { font-size: 18px; font-weight: 500; letter-spacing: -.02em; }
+.case .case__hdr { border-top: 0; padding-top: 0; }   /* the sticky bar's rule is right above it */
+/* phones: one-row bar (back pill and arrows); the case title just below says where you are */
+@media (max-width: 720px) { .case__crumb { display: none; } }
 .case__grid { display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: var(--gap1); }
 .media { position: relative; overflow: hidden; border-radius: var(--rad); min-width: 0; }
 .media img, .media__video { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
@@ -192,26 +223,26 @@ img, video { display: block; max-width: 100%; }
 .case__copy { display: flex; flex-direction: column; gap: 20px; line-height: 1.55; color: var(--body); }
 .case__copy p { margin: 0; text-wrap: pretty; }
 .case__art { width: min(100%, 380px); height: auto; align-self: center; margin-top: calc(-1 * var(--gap1)); margin-bottom: calc(-1 * var(--gap3)); }   /* transparent graphic under the Approach text, centred under it; cancels .case__text's bottom padding */
-/* per-case fine-tuning: .case--06 = Seaworthy, .case--03 = Toro Bravo, etc. (class set in CaseStudy.jsx from the project number) */
-.case--06 .case__d3col { margin-top: 0; }   /* the fish logo already fills the right column, so drop the d3 stagger */
+/* per-case fine-tuning, keyed to each case's slug in projects.jsx (class set in CaseStudy.jsx) */
+.case--seaworthy .case__d3col { margin-top: 0; }   /* the fish logo already fills the right column, so drop the d3 stagger */
 @media (min-width: 721px) {
-  .case--06 .case__d2 { margin-top: -87px; }                    /* green invite: more negative = higher */
-  .case--06 .case__pattern--desk { margin-top: 24px; }          /* mint invite: bigger = lower */
+  .case--seaworthy .case__d2 { margin-top: -87px; }                    /* green invite: more negative = higher */
+  .case--seaworthy .case__pattern--desk { margin-top: 24px; }          /* mint invite: bigger = lower */
 }
-.case--06 .h3, .case--03 .h3 { max-width: none; }   /* Seaworthy + Toro headline breaks are set by hand in projects.jsx */
-.case--03 .case__art { width: min(100%, 320px); margin-top: var(--gap3); margin-bottom: 0; opacity: .75; }   /* Toro logo: size, space above/below (PNG has no built-in margin), transparency */
+.case--seaworthy .h3, .case--toro-bravo .h3 { max-width: none; }   /* Seaworthy + Toro headline breaks are set by hand in projects.jsx */
+.case--toro-bravo .case__art { width: min(100%, 320px); margin-top: var(--gap3); margin-bottom: 0; opacity: .75; }   /* Toro logo: size, space above/below (PNG has no built-in margin), transparency */
 /* desktop: bigger logo that hangs down behind the cover so the cover's top-right corner overlaps the circle.
    margin-bottom pulls the rows below up over it (more negative = more overlap) */
 @media (min-width: 721px) {
   /* --toro-drop: logo + cover down together (bigger = lower)
      --toro-logo-y: logo only (negative = up)
      --toro-overlap: cover only, how far it rides up over the logo (bigger = more overlap) */
-  .case--03 { --toro-drop: 114px; --toro-logo-y: -144px; --toro-overlap: 110px; }
-  .case--03 .case__art { width: min(100%, 520px); margin-top: calc(var(--gap3) + var(--toro-drop) + var(--toro-logo-y)); margin-bottom: calc(-284px - var(--toro-logo-y)); }
+  .case--toro-bravo { --toro-drop: 114px; --toro-logo-y: -144px; --toro-overlap: 110px; }
+  .case--toro-bravo .case__art { width: min(100%, 520px); margin-top: calc(var(--gap3) + var(--toro-drop) + var(--toro-logo-y)); margin-bottom: calc(-284px - var(--toro-logo-y)); }
   /* centre the logo between the pattern image's right edge (max 440px wide) and the page's right edge.
      100% = width of the text column; 12px = the column gap in .case__text */
-  .case--03 .case__art { position: relative; z-index: 2; left: calc((min(100%, 440px) - 12px - 100%) / 2); }   /* z-index: logo sits in front of the cover */
-  .case--03 .case__d2 { margin-top: calc(var(--toro-drop) - var(--toro-overlap)); }
+  .case--toro-bravo .case__art { position: relative; z-index: 2; left: calc((min(100%, 440px) - 12px - 100%) / 2); }   /* z-index: logo sits in front of the cover */
+  .case--toro-bravo .case__d2 { margin-top: calc(var(--toro-drop) - var(--toro-overlap)); }
 }
 .case__d2 { grid-column: span 4; aspect-ratio: 4 / 3; }
 .case__d3col { grid-column: span 2; margin-top: clamp(40px, 14vw, 220px); min-width: 0; display: flex; flex-direction: column; gap: 10px; align-self: start; }
@@ -246,14 +277,12 @@ img, video { display: block; max-width: 100%; }
 .phone::after { content: ''; position: absolute; top: 15cqw; right: -.55cqw; width: .55cqw; height: 9cqw; border-radius: 0 .4cqw .4cqw 0; background: var(--muted); }   /* side button */
 @media (min-width: 721px) {
   /* Mountain View Heritage: time lapse stacked above the phones, like mobile, in a centred column */
-  .case--02 .case__d2, .case--02 .case__phones { grid-column: 2 / span 4; }
+  .case--mountain-view-heritage .case__d2, .case--mountain-view-heritage .case__phones { grid-column: 2 / span 4; }
 }
 .case__label { font-family: var(--mono); font-size: 13px; line-height: 1.35; color: var(--muted); }
 .media--empty { background: var(--surf); display: grid; place-items: center; font-family: var(--mono); font-size: 12px; color: var(--muted); text-align: center; padding: 12px; }
 @media (max-width: 720px) {
   .case__hdr { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-  .case__nav button { height: 32px; min-width: 32px; padding: 0 4px; }
-  .case__nav .case__arrow { width: 32px; }
   .case__d2, .case__d3col, .case__phones { grid-column: 1 / -1; margin-top: 0; }
   .case__pattern--desk { display: none; }
   .case__pattern--mob { display: block; }
